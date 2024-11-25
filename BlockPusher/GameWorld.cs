@@ -30,7 +30,7 @@ namespace BlockPusher
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-
+            gameObjects.Add(new Player());
             base.Initialize();
         }
 

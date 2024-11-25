@@ -12,15 +12,19 @@ namespace BlockPusher
     /// </summary>
     enum PlayerSprite
     {
+        // front facing the camera
         WalkFront_0 = 65,
         WalkFront_1 = 66,
         WalkFront_2 = 67,
+        // back facing the camera
         WalkBack_0 = 68,
         WalkBack_1 = 69,
         WalkBack_2 = 70,
+        // looks towords right
         WalkRight_0 = 91,
         WalkRight_1 = 92,
         WalkRight_2 = 93,
+        // looks towords left
         WalkLeft_0 = 94,
         WalkLeft_1 = 95,
         WalkLeft_2 = 96,
@@ -34,6 +38,8 @@ namespace BlockPusher
     {
         // Field //
         private Rectangle sourceRectangle;
+        private Texture2D tilesheet;
+        
        
         // Properties //
 
@@ -41,21 +47,37 @@ namespace BlockPusher
 
         public override void LoadContent(ContentManager content)
         {
-            throw new NotImplementedException();
+            tilesheet = content.Load<Texture2D>("tilesheet");
         }
 
         public override void Update(GameTime gameTime)
         {
             HandleInput();
             Move(gameTime);
+            
         }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            int spriteSize = 128;
+
+            // create a sourceRectangle 
+            sourceRectangle = new Rectangle(0,512, spriteSize, spriteSize);
+
+            // only draw the area with in the sourceRectangle
+            spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White);
+            
+            base.Draw(spriteBatch);
+        }
+
 
         /// <summary>
         /// Constuctor used to set player stats
         /// </summary>
         public Player()
         {
-            speed = 100;
+            position = new Vector2(500,500);
+            speed = 300;
         }
 
         public void HandleInput()
@@ -66,25 +88,25 @@ namespace BlockPusher
             // get the current keyboard state
             KeyboardState keyState = Keyboard.GetState();
 
-            // Press W
+            // Press W : Up
             if (keyState.IsKeyDown(Keys.W))
             {
                 velocity += new Vector2(0, -1);
             }
 
-            // Press S
+            // Press S : Down
             if (keyState.IsKeyDown(Keys.S))
             {
                 velocity += new Vector2(0, 1);
             }
 
-            // Press A
+            // Press A : Right
             if (keyState.IsKeyDown(Keys.A))
             {
                 velocity += new Vector2(-1, 0);
             }
             
-            // Press D
+            // Press D : Left
             if (keyState.IsKeyDown(Keys.D))
             {
                 velocity += new Vector2(1, 0);
@@ -92,7 +114,7 @@ namespace BlockPusher
 
             // To avoid moving faster when pressing more then one key,
             // the vectore needs to be normalized
-            if(velocity != Vector2.Zero)
+            if (velocity != Vector2.Zero)
             {
                 velocity.Normalize();
             }
