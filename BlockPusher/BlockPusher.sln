@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35327.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockPusher", "BlockPusher.csproj", "{92A42FA0-863A-4F1D-97A3-318E8DE1939D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{92A42FA0-863A-4F1D-97A3-318E8DE1939D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92A42FA0-863A-4F1D-97A3-318E8DE1939D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92A42FA0-863A-4F1D-97A3-318E8DE1939D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92A42FA0-863A-4F1D-97A3-318E8DE1939D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9F177E99-22C0-4786-BD87-8D66AF363C69}
+	EndGlobalSection
+EndGlobal
