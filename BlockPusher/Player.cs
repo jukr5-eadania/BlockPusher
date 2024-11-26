@@ -39,8 +39,11 @@ namespace BlockPusher
         // Field //
         private Rectangle sourceRectangle;
         private Texture2D tilesheet;
-        
-       
+        private int spriteSize;
+        private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
+        private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
+        private int tilesheetWidth = 13; // the width of our tilesheet (counted by images)
+
         // Properties //
 
         // Methods //
@@ -59,10 +62,12 @@ namespace BlockPusher
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            int spriteSize = 128;
-
+            spriteSize = 128;
+            var index = (int)PlayerSprite.WalkLeft_0;
+            spriteX = index % tilesheetWidth;
+            spriteY = index / tilesheetWidth;
             // create a sourceRectangle 
-            sourceRectangle = new Rectangle(0,512, spriteSize, spriteSize);
+            sourceRectangle = new Rectangle(spriteX*spriteSize,spriteY*spriteSize, spriteSize, spriteSize);
 
             // only draw the area with in the sourceRectangle
             spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White);
