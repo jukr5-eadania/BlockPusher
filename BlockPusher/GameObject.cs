@@ -12,7 +12,7 @@ namespace BlockPusher
         protected Vector2 position;
 
         // Properties // 
-       
+        public virtual Rectangle collisionBox { get; }
 
         // Methods //
         public abstract void LoadContent(ContentManager content);
@@ -43,7 +43,17 @@ namespace BlockPusher
         /// Checks if there have been a collision between two objects
         /// </summary>
         /// <param name="other"> name of the other object that is collided with </param>
-        public void CheckCollision(GameObject other)
+        public virtual void CheckCollision(GameObject other)
+        {
+
+        }
+
+        /// <summary>
+        /// "OnCollision" tells the program what happens when two specified 
+        /// objects collied.
+        /// </summary>
+        /// <param name="other"> name for the other gameobject that is collided with </param>
+        public virtual void OnCollision(GameObject other)
         {
 
         }

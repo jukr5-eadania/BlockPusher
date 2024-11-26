@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace BlockPusher
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
+        private Texture2D collisionTexture;
 
         public static int Height { get; set; }
         public static int Width { get; set; }
@@ -31,6 +33,7 @@ namespace BlockPusher
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
             gameObjects.Add(new Player());
+            gameObjects.Add(new Box());
             base.Initialize();
         }
 
@@ -41,7 +44,7 @@ namespace BlockPusher
             {
                 gameObject.LoadContent(Content);
             }
-            
+            collisionTexture = Content.Load<Texture2D>("pixel");
         }
 
         protected override void Update(GameTime gameTime)
@@ -71,6 +74,20 @@ namespace BlockPusher
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+        private void DrawCollisionBox(GameObject go)
+        {
+            
+            Rectangle collisionBox = go.collisionBox;
+            Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
+            Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
+            Rectangle rightLine = new Rectangle(collisionBox.X + collisionBox.Width, collisionBox.Y, 1, collisionBox.Height);
+            Rectangle leftLine = new Rectangle(collisionBox.X, collisionBox.Y, 1, collisionBox.Height);
+
+            _spriteBatch.Draw(collisionTexture, topLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, bottomLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, rightLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
+            _spriteBatch.Draw(collisionTexture, leftLine, null, Color.Red, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
     }
 }

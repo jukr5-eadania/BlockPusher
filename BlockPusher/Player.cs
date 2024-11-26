@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SharpDX.Direct3D9;
 using System;
 
 namespace BlockPusher
@@ -39,14 +40,30 @@ namespace BlockPusher
         // Field //
         private Rectangle sourceRectangle;
         private Texture2D tilesheet;
-        private int spriteSize;
+        private int spriteSize = 128;
+        private int tilesheetWidth = 13; // the width of our tilesheet (counted by images)
+        private int index = (int)PlayerSprite.WalkFront_0; // default sprite
         private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
         private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
-        private int tilesheetWidth = 13; // the width of our tilesheet (counted by images)
 
         // Properties //
-
+        public override Rectangle collisionBox
+        {
+            get
+            {
+                return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
+            }
+        }
         // Methods //
+
+        /// <summary>
+        /// Constuctor used to set player stats
+        /// </summary>
+        public Player()
+        {
+            position = new Vector2(500, 500);
+            speed = 300;
+        }
 
         public override void LoadContent(ContentManager content)
         {
@@ -62,27 +79,17 @@ namespace BlockPusher
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteSize = 128;
-            var index = (int)PlayerSprite.WalkLeft_0;
+            //spriteSize = 128;
+            index = (int)PlayerSprite.WalkFront_0; // default sprite
             spriteX = index % tilesheetWidth;
             spriteY = index / tilesheetWidth;
             // create a sourceRectangle 
             sourceRectangle = new Rectangle(spriteX*spriteSize,spriteY*spriteSize, spriteSize, spriteSize);
 
-            // only draw the area with in the sourceRectangle
+            // only draw the area within the sourceRectangle
             spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White);
             
             base.Draw(spriteBatch);
-        }
-
-
-        /// <summary>
-        /// Constuctor used to set player stats
-        /// </summary>
-        public Player()
-        {
-            position = new Vector2(500,500);
-            speed = 300;
         }
 
         public void HandleInput()
@@ -129,6 +136,7 @@ namespace BlockPusher
             {
                 ResetLevel();
             }
+                        
         }
 
         public void ResetLevel()
