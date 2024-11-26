@@ -65,11 +65,19 @@ namespace BlockPusher
             speed = 300;
         }
 
+        /// <summary>
+        /// Loads the sprites / the spritesheet
+        /// </summary>
+        /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
             tilesheet = content.Load<Texture2D>("tilesheet");
         }
 
+        /// <summary>
+        /// the main loop of the player
+        /// </summary>
+        /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
             HandleInput();
@@ -77,6 +85,10 @@ namespace BlockPusher
             
         }
 
+        /// <summary>
+        /// Draws the sprite so it is visual in the game
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             //spriteSize = 128;
@@ -92,6 +104,9 @@ namespace BlockPusher
             base.Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// the method for handling the input used by the player
+        /// </summary>
         public void HandleInput()
         {
             // reset velocity to make sure we will stop moving, when no key is pressed
@@ -136,12 +151,29 @@ namespace BlockPusher
             {
                 ResetLevel();
             }
-                        
+
         }
 
+        /// <summary>
+        /// When close to a box you can press space to push it
+        /// </summary>
+        public void Push()
+        {
+            // get the current keyboard state
+            KeyboardState keyState = Keyboard.GetState();
+
+            if (keyState.IsKeyDown(Keys.Space))
+            {
+                // push the box... somehow
+            }
+        }
+
+        /// <summary>
+        /// Makes it possible to rested the level
+        /// </summary>
         public void ResetLevel()
         {
-
+           
         }
 
     }
