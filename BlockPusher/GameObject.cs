@@ -47,7 +47,7 @@ namespace BlockPusher
         {
             if (collisionBox.Intersects(other.collisionBox) && other != this)
             {
-                OnCollision(this);
+                OnCollision(other);
             }
         }
 
