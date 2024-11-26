@@ -40,11 +40,11 @@ namespace BlockPusher
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            collisionTexture = Content.Load<Texture2D>("pixel");
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.LoadContent(Content);
             }
-            collisionTexture = Content.Load<Texture2D>("pixel");
         }
 
         protected override void Update(GameTime gameTime)

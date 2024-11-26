@@ -23,6 +23,13 @@ namespace BlockPusher
         private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
         private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
 
+        public override Rectangle collisionBox
+        {
+            get
+            {
+                return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
+            }
+        }
 
         // Method // 
         public Box()

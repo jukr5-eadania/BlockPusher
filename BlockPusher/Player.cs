@@ -154,6 +154,15 @@ namespace BlockPusher
 
         }
 
+
+        public override void OnCollision(GameObject other)
+        {
+            if (other is Box)
+            {
+                speed = 0; // collision test: if there is a collision player stops moving
+            }
+        }
+
         /// <summary>
         /// When close to a box you can press space to push it
         /// </summary>
@@ -165,6 +174,7 @@ namespace BlockPusher
             if (keyState.IsKeyDown(Keys.Space))
             {
                 // push the box... somehow
+                
             }
         }
 

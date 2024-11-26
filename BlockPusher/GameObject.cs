@@ -45,7 +45,10 @@ namespace BlockPusher
         /// <param name="other"> name of the other object that is collided with </param>
         public virtual void CheckCollision(GameObject other)
         {
-
+            if (collisionBox.Intersects(other.collisionBox) && other != this)
+            {
+                OnCollision(this);
+            }
         }
 
         /// <summary>
