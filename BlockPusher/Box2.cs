@@ -68,9 +68,9 @@ namespace BlockPusher
             Vector2 bVector = new Vector2(b.X, b.Y);
             var delta = a - bVector;
 
-            if (Math.Abs(delta.X) > Math.Abs(delta.Y))
+            if (Math.Abs(delta.X) >= Math.Abs(delta.Y))
             {
-                if (delta.X > 0)
+                if (delta.X >= 0)
                 {
                     return "right";
                 }
@@ -81,7 +81,7 @@ namespace BlockPusher
             }
             else
             {
-                if (delta.Y > 0)
+                if (delta.Y >= 0)
                 {
                     return "up";
                 }
