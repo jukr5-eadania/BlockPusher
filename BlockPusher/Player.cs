@@ -39,12 +39,13 @@ namespace BlockPusher
     {
         // Field //
         private Rectangle sourceRectangle;
-        private Texture2D tilesheet;
+        private Rectangle destinationRectangle;
         private int spriteSize = 128;
         private int tilesheetWidth = 13; // the width of our tilesheet (counted by images)
         private int index = (int)PlayerSprite.WalkFront_0; // default sprite
         private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
         private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
+                
 
         // Properties //
         public override Rectangle collisionBox
@@ -60,8 +61,8 @@ namespace BlockPusher
         /// Constuctor used to set player stats
         /// </summary>
         public Player()
-        {
-            position = new Vector2(640, 640);
+        {            
+            position = new Vector2(640, 640);            
             speed = 300;
         }
 
@@ -71,7 +72,7 @@ namespace BlockPusher
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
-            tilesheet = content.Load<Texture2D>("tilesheet");
+            textureAtlas = content.Load<Texture2D>("tilesheet");
         }
 
         /// <summary>
@@ -91,6 +92,7 @@ namespace BlockPusher
         /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
+            
             //spriteSize = 128;
             index = (int)PlayerSprite.WalkFront_0; // default sprite
             spriteX = index % tilesheetWidth;
@@ -99,7 +101,7 @@ namespace BlockPusher
             sourceRectangle = new Rectangle(spriteX*spriteSize,spriteY*spriteSize, spriteSize, spriteSize);
 
             // only draw the area within the sourceRectangle
-            spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAtlas, position, sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             base.Draw(spriteBatch);
         }
 
