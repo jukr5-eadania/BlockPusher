@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BlockPusher
 {
@@ -38,7 +39,6 @@ namespace BlockPusher
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
             gameObjects.Add(new Player());
-            gameObjects.Add(new Box());
             base.Initialize();
         }
 
@@ -72,6 +72,7 @@ namespace BlockPusher
                     gameObject.CheckCollision(other);
                 }
             }
+            CheckWin();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -92,7 +93,7 @@ namespace BlockPusher
         }
         private void DrawCollisionBox(GameObject go)
         {
-            
+
             Rectangle collisionBox = go.collisionBox;
             Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
             Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
@@ -152,7 +153,7 @@ namespace BlockPusher
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
-                bool collision = (item.Value == 89);
+                bool collision = (item.Value != 89);
 
                 Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
 
@@ -160,10 +161,33 @@ namespace BlockPusher
                 {
                     gameObjects.Add(new Box2(textureAtlas, destinationRectange, source));
                 }
+                else if (item.Value == 102)
+                {
+                    gameObjects.Add(new Goal(textureAtlas, destinationRectange, source));
+
+                }
                 else
                 {
                     gameObjects.Add(new Wall(textureAtlas, destinationRectange, source, collision));
                 }
+            }
+        }
+        // Checks if all goals have a box on them, runs win logic if they do
+        private void CheckWin()
+        {
+            int goalCount = gameObjects.Count(x => x is Goal);
+            int activeGoals = 0;
+            foreach (GameObject gameObject in gameObjects)
+            {
+                if (gameObject is Goal && gameObject.goalPressed)
+                {
+                    activeGoals++;
+                }
+            }
+            if (activeGoals >= goalCount)
+            {
+                // Win logic here
+                Exit();
             }
         }
     }
