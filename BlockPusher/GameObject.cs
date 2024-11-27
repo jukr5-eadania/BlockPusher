@@ -9,7 +9,9 @@ namespace BlockPusher
         // Field //
         protected Vector2 velocity;
         protected float speed;
-        protected Vector2 position;
+        public Vector2 position;
+        protected bool collision = true;
+        protected Texture2D textureAtlas;
 
         // Properties // 
         public virtual Rectangle collisionBox { get; }
