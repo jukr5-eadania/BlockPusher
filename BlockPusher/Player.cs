@@ -61,7 +61,7 @@ namespace BlockPusher
         /// </summary>
         public Player()
         {
-            position = new Vector2(500, 500);
+            position = new Vector2(640, 640);
             speed = 300;
         }
 
@@ -99,8 +99,7 @@ namespace BlockPusher
             sourceRectangle = new Rectangle(spriteX*spriteSize,spriteY*spriteSize, spriteSize, spriteSize);
 
             // only draw the area within the sourceRectangle
-            spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White);
-            
+            spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             base.Draw(spriteBatch);
         }
 
