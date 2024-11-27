@@ -118,25 +118,25 @@ namespace BlockPusher
             // Press W : Up
             if (keyState.IsKeyDown(Keys.W))
             {
-                velocity += new Vector2(0, -1);
+                velocity += new Vector2(0, -128);
             }
 
             // Press S : Down
             if (keyState.IsKeyDown(Keys.S))
             {
-                velocity += new Vector2(0, 1);
+                velocity += new Vector2(0, 128);
             }
 
             // Press A : Right
             if (keyState.IsKeyDown(Keys.A))
             {
-                velocity += new Vector2(-1, 0);
+                velocity += new Vector2(-128, 0);
             }
             
             // Press D : Left
             if (keyState.IsKeyDown(Keys.D))
             {
-                velocity += new Vector2(1, 0);
+                velocity += new Vector2(128, 0);
             }
 
             // To avoid moving faster when pressing more then one key,
@@ -163,20 +163,6 @@ namespace BlockPusher
             }
         }
 
-        /// <summary>
-        /// When close to a box you can press space to push it
-        /// </summary>
-        public void Push()
-        {
-            // get the current keyboard state
-            KeyboardState keyState = Keyboard.GetState();
-
-            if (keyState.IsKeyDown(Keys.Space))
-            {
-                // push the box... somehow
-                
-            }
-        }
 
         /// <summary>
         /// Makes it possible to rested the level
