@@ -7,19 +7,24 @@ namespace BlockPusher
 {
     internal class Wall : GameObject
     {
-        Rectangle destinationRectange;
+        Rectangle destinationRectangle;
         Rectangle source;
+
+        public override Rectangle collisionBox
+        {
+            get => destinationRectangle;
+        }
         public Wall(Texture2D textureAtlas, Rectangle destinationRectange, Rectangle source, bool collision)
         {
             this.textureAtlas = textureAtlas;
-            this.destinationRectange = destinationRectange;
+            this.destinationRectangle = destinationRectange;
             this.source = source;
-            this.collision = collision;
+            this.collisionOn = collision;
 
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(textureAtlas, destinationRectange, source, Color.White, 0, new Vector2(64, 64), SpriteEffects.None, 1);
+            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
         }
         public override void LoadContent(ContentManager content)
         {

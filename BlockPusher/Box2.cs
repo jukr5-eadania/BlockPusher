@@ -10,6 +10,7 @@ namespace BlockPusher
     {
         Rectangle destinationRectangle;
         Rectangle source;
+        public string moveDirection;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
@@ -18,7 +19,6 @@ namespace BlockPusher
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
-            this.destinationRectangle.Location += new Point(-64, -64);
             this.source = source;
 
         }
@@ -32,38 +32,67 @@ namespace BlockPusher
 
         public override void Update(GameTime gameTime)
         {
-            
+
         }
 
         public override void OnCollision(GameObject other)
         {
-            switch (CheckPosition(other.position, destinationRectangle.Location))
+            if (other is Player)
             {
-                case "right":
-                    {
-                        destinationRectangle.Location += new Point(-128, 0);
-
-                        break;
-                    }
-                case "left":
-                    {
-                        destinationRectangle.Location += new Point(128, 0);
-                        break;
-                    }
-                case "up":
-                    {
-                        destinationRectangle.Location += new Point(0, -128);
-                        break;
-                    }
-                case "down":
-                    {
-                        destinationRectangle.Location += new Point(0, 128);
-                        break;
-                    }
+                moveDirection = CheckPlayerPosition(other.position, destinationRectangle.Location);
+                switch (moveDirection)
+                {
+                    case "right":
+                        {
+                            destinationRectangle.Location += new Point(-128, 0);
+                            break;
+                        }
+                    case "left":
+                        {
+                            destinationRectangle.Location += new Point(128, 0);
+                            break;
+                        }
+                    case "up":
+                        {
+                            destinationRectangle.Location += new Point(0, 128);
+                            break;
+                        }
+                    case "down":
+                        {
+                            destinationRectangle.Location += new Point(0, -128);
+                            break;
+                        }
+                }
+            }
+            else if (other is Wall || other is Box2)
+            {
+                switch (moveDirection)
+                {
+                    case "right":
+                        {
+                            destinationRectangle.Location += new Point(128, 0);
+                            break;
+                        }
+                    case "left":
+                        {
+                            destinationRectangle.Location += new Point(-128, 0);
+                            break;
+                        }
+                    case "up":
+                        {
+                            destinationRectangle.Location += new Point(0, -128);
+                            break;
+                        }
+                    case "down":
+                        {
+                            destinationRectangle.Location += new Point(0, 128);
+                            break;
+                        }
+                }
             }
         }
 
-        static string CheckPosition(Vector2 a, Point b)
+        static string CheckPlayerPosition(Vector2 a, Point b)
         {
             Vector2 bVector = new Vector2(b.X, b.Y);
             var delta = a - bVector;
@@ -75,13 +104,13 @@ namespace BlockPusher
                     return "right";
                 }
                 else
-                    {
+                {
                     return "left";
-                } 
+                }
             }
             else
             {
-                if (delta.Y >= 0)
+                if (delta.Y <= 0)
                 {
                     return "up";
                 }

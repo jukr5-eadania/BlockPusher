@@ -10,7 +10,8 @@ namespace BlockPusher
         protected Vector2 velocity;
         protected float speed;
         public Vector2 position;
-        protected bool collision = true;
+        public bool collisionOn = true;
+        public bool goalPressed = false;
         protected Texture2D textureAtlas;
 
         // Properties // 
@@ -47,9 +48,10 @@ namespace BlockPusher
         /// <param name="other"> name of the other object that is collided with </param>
         public virtual void CheckCollision(GameObject other)
         {
-            if (collisionBox.Intersects(other.collisionBox) && other != this)
+            if (collisionBox.Intersects(other.collisionBox) && other != this && other.collisionOn)
             {
                 OnCollision(other);
+
             }
         }
 
