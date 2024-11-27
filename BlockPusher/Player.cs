@@ -158,9 +158,9 @@ namespace BlockPusher
 
         public override void OnCollision(GameObject other)
         {
-            if (other is Box)
+            if (other is Wall)
             {
-                speed = 0; // collision test: if there is a collision player stops moving
+                
             }
         }
 
