@@ -9,22 +9,27 @@ namespace BlockPusher
     {
         Rectangle destinationRectangle;
         Rectangle source;
+        private string color;
+        private bool active;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
         }
+        public string Color { get => color; set => color = value; }
+        public bool Active { get => active; set => active = value; }
 
-        public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, bool collision)
+        public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, bool collision, string color)
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
             this.collisionOn = collision;
+            this.color = color;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
         }
 
         public override void LoadContent(ContentManager content)
@@ -34,9 +39,14 @@ namespace BlockPusher
 
         public override void Update(GameTime gameTime)
         {
-            if (true)
+            DoorState();
+        }
+
+        public void DoorState()
+        {
+            if (active == true)
             {
-                
+
             }
         }
     }

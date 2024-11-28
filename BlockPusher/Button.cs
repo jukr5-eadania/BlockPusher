@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace BlockPusher
 {
@@ -10,17 +11,19 @@ namespace BlockPusher
         Rectangle destinationRectangle;
         Rectangle source;
         private bool active;
-        public bool Active { get => active; set => active = value; }
+        public static List<Door> doors = new();
+        private string color;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
         }
 
-        public Button(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source)
+        public Button(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, string color)
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
+            this.color = color;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -42,7 +45,13 @@ namespace BlockPusher
         {
             if (other is Player || other is Box2)
             {
-                Active = true;
+                foreach (Door door in doors)
+                {
+                    if (door.Color == color)
+                    {
+                        door.Active = true;
+                    }
+                }
             }
         }
 
@@ -50,7 +59,13 @@ namespace BlockPusher
         {
             if (other is Player || other is Box2)
             {
-                Active = false;
+                foreach (Door door in doors)
+                {
+                    if (door.Color == color)
+                    {
+                        door.Active = false;
+                    }
+                }
             }
         }
     }
