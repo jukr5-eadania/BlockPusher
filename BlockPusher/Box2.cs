@@ -64,7 +64,7 @@ namespace BlockPusher
                         }
                 }
             }
-            else if (other is Wall || other is Box2)
+            else if (other is Wall || other is Box2 || other is Door)
             {
                 switch (moveDirection)
                 {

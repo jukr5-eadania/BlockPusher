@@ -9,17 +9,17 @@ namespace BlockPusher
     {
         Rectangle destinationRectangle;
         Rectangle source;
-        Button button;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
         }
 
-        public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source)
+        public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, bool collision)
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
+            this.collisionOn = collision;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -34,10 +34,10 @@ namespace BlockPusher
 
         public override void Update(GameTime gameTime)
         {
-            if (button.Active == true)
+            if (true)
             {
-
-            }   
+                
+            }
         }
     }
 }

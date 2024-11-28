@@ -164,7 +164,14 @@ namespace BlockPusher
                 else if (item.Value == 102)
                 {
                     gameObjects.Add(new Goal(textureAtlas, destinationRectange, source));
-
+                }
+                else if (item.Value == 24)
+                {
+                    gameObjects.Add(new Door(textureAtlas, destinationRectange, source, collision));
+                }
+                else if (item.Value == 25)
+                {
+                    gameObjects.Add(new Button(textureAtlas, destinationRectange, source));
                 }
                 else
                 {
