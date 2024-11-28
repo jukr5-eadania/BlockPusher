@@ -55,7 +55,7 @@ namespace BlockPusher
                 OnCollisionEnter(other);
                 collidingObjects.Add(other);
             }
-            else if (collisionBox.Intersects(other.collisionBox) && other != this)
+            else if (collisionBox.Intersects(other.collisionBox) && other != this && other.collisionOn)
             {
                 OnCollision(other);
             }
