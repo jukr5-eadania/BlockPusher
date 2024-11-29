@@ -45,15 +45,19 @@ namespace BlockPusher
         private int index = (int)PlayerSprite.WalkFront_0; // default sprite
         private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
         private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
-                
+
+        // Animation test
+        private int activeFrame;
+        private int numFrames;
+        private int counter;
 
         // Properties //
         public override Rectangle collisionBox
         {
-            get
-            {
-                return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
-            }
+            get => destinationRectangle;
+            //{
+            //    return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
+            //}
         }
         // Methods //
 
@@ -73,6 +77,11 @@ namespace BlockPusher
         public override void LoadContent(ContentManager content)
         {
             textureAtlas = content.Load<Texture2D>("tilesheet");
+
+            //animation test
+            activeFrame = 0;
+            numFrames = 3;
+            counter = 0;
         }
 
         /// <summary>
@@ -82,7 +91,18 @@ namespace BlockPusher
         public override void Update(GameTime gameTime)
         {
             HandleInput();
-            Move(gameTime);
+            //Move(gameTime);
+
+            counter++;
+            if(counter > 29)
+            {
+                counter = 0;
+                activeFrame++;
+                if(activeFrame == numFrames)
+                {
+                    activeFrame = 0;
+                }
+            }
             
         }
 
@@ -98,10 +118,11 @@ namespace BlockPusher
             spriteX = index % tilesheetWidth;
             spriteY = index / tilesheetWidth;
             // create a sourceRectangle 
-            sourceRectangle = new Rectangle(spriteX*spriteSize,spriteY*spriteSize, spriteSize, spriteSize);
+            sourceRectangle = new Rectangle(activeFrame*tilesheetWidth,0,spriteSize,spriteSize);
+            destinationRectangle = new Rectangle(640, 640, 128, 128);
 
             // only draw the area within the sourceRectangle
-            spriteBatch.Draw(textureAtlas, position, sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAtlas, destinationRectangle, sourceRectangle, Color.White);
             base.Draw(spriteBatch);
         }
 
@@ -111,7 +132,7 @@ namespace BlockPusher
         public void HandleInput()
         {
             // reset velocity to make sure we will stop moving, when no key is pressed
-            velocity = Vector2.Zero;
+            //velocity = Vector2.Zero;
 
             // get the current keyboard state
             KeyboardState keyState = Keyboard.GetState();
@@ -119,19 +140,22 @@ namespace BlockPusher
             // Press W : Up
             if (keyState.IsKeyDown(Keys.W))
             {
-                velocity += new Vector2(0, -128);
+                //velocity += new Vector2(0, -128);
+                destinationRectangle.Location += new Point(0, -128);
             }
 
             // Press S : Down
             if (keyState.IsKeyDown(Keys.S))
             {
-                velocity += new Vector2(0, 128);
+                //velocity += new Vector2(0, 128);
+                destinationRectangle.Location += new Point(0, 128);
             }
 
             // Press A : Right
             if (keyState.IsKeyDown(Keys.A))
             {
-                velocity += new Vector2(-128, 0);
+                //velocity += new Vector2(-128, 0);
+                destinationRectangle.Location += new Point(128, 0);
             }
             
             // Press D : Left
@@ -142,10 +166,10 @@ namespace BlockPusher
 
             // To avoid moving faster when pressing more then one key,
             // the vectore needs to be normalized
-            if (velocity != Vector2.Zero)
-            {
-                velocity.Normalize();
-            }
+            //if (velocity != Vector2.Zero)
+            //{
+            //    velocity.Normalize();
+            //}
 
             // When pressing R the Level resets
             if (keyState.IsKeyDown(Keys.R))
