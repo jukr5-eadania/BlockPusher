@@ -118,7 +118,7 @@ namespace BlockPusher
             spriteX = index % tilesheetWidth;
             spriteY = index / tilesheetWidth;
             // create a sourceRectangle 
-            sourceRectangle = new Rectangle(activeFrame*tilesheetWidth,0,spriteSize,spriteSize);
+            sourceRectangle = new Rectangle(spriteX * spriteSize, spriteY * spriteSize, spriteSize, spriteSize);
             destinationRectangle = new Rectangle(640, 640, 128, 128);
 
             // only draw the area within the sourceRectangle
