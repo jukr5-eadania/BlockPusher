@@ -136,7 +136,6 @@ namespace BlockPusher
             {
                 velocity += new Vector2(0, -128);
                 animation = new Animation(3, 3, new Vector2(128, 128), 3, 5);
-                
             }
 
             // Press S : Down
@@ -160,10 +159,6 @@ namespace BlockPusher
                 animation = new Animation(3, 3, new Vector2(128, 128), 3, 7);
             }
 
-            if (keyState.IsKeyDown(Keys.None))
-            {
-                animation = new Animation(1, 1, new Vector2(128, 128), 0, 5);
-            }
 
             //To avoid moving faster when pressing more then one key,
             //the vectore needs to be normalized
