@@ -19,6 +19,8 @@ namespace BlockPusher
         private Dictionary<Vector3, int> objects;
         private Texture2D textureAtlas;
 
+        //private List<Door> doors = new();
+
         public static int Height { get; set; }
         public static int Width { get; set; }
 
@@ -164,7 +166,16 @@ namespace BlockPusher
                 else if (item.Value == 102)
                 {
                     gameObjects.Add(new Goal(textureAtlas, destinationRectange, source));
-
+                }
+                else if (item.Value == 24)
+                {
+                    Door doorOrange = new Door(textureAtlas, destinationRectange, source, collision, "orange");
+                    gameObjects.Add(doorOrange);
+                    Button.doors.Add(doorOrange);
+                }
+                else if (item.Value == 25)
+                {
+                    gameObjects.Add(new Button(textureAtlas, destinationRectange, source, "orange"));
                 }
                 else
                 {

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
 
 namespace BlockPusher
 {
@@ -13,6 +14,7 @@ namespace BlockPusher
         public bool collisionOn = true;
         public bool goalPressed = false;
         protected Texture2D textureAtlas;
+        protected List<GameObject> collidingObjects = new();
 
         // Properties // 
         public virtual Rectangle collisionBox { get; }
@@ -48,10 +50,19 @@ namespace BlockPusher
         /// <param name="other"> name of the other object that is collided with </param>
         public virtual void CheckCollision(GameObject other)
         {
-            if (collisionBox.Intersects(other.collisionBox) && other != this && other.collisionOn)
+            if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
+            {
+                OnCollisionEnter(other);
+                collidingObjects.Add(other);
+            }
+            else if (collisionBox.Intersects(other.collisionBox) && other != this && other.collisionOn)
             {
                 OnCollision(other);
-
+            }
+            else if (collidingObjects.Contains(other))
+            {
+                OnCollisionExit(other);
+                collidingObjects.Remove(other);
             }
         }
 
@@ -61,6 +72,24 @@ namespace BlockPusher
         /// </summary>
         /// <param name="other"> name for the other gameobject that is collided with </param>
         public virtual void OnCollision(GameObject other)
+        {
+
+        }
+
+        /// <summary>
+        /// When exiting a collision this is used
+        /// </summary>
+        /// <param name="other">name for the other gameobject that is collided with</param>
+        public virtual void OnCollisionExit(GameObject other)
+        {
+
+        }
+
+        /// <summary>
+        /// When entering an collision this is used
+        /// </summary>
+        /// <param name="other">name for the other gameobject that is collided with</param>
+        public virtual void OnCollisionEnter(GameObject other)
         {
 
         }
