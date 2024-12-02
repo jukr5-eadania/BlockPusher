@@ -11,6 +11,10 @@ namespace BlockPusher
         Rectangle source;
         private string color;
         private bool active;
+        int pixelTilesize = 128;
+        int numTilesPerRow = 13;
+        int value = 24;
+        
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
@@ -29,16 +33,24 @@ namespace BlockPusher
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            if (active)
+            {
+                spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            }
+            else
+            {
+                spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            }
         }
 
         public override void LoadContent(ContentManager content)
         {
-            
+
         }
 
         public override void Update(GameTime gameTime)
         {
+            
             DoorState();
         }
 
@@ -46,7 +58,19 @@ namespace BlockPusher
         {
             if (active == true)
             {
-
+                value = 12;
+                int x = value % numTilesPerRow;
+                int y = value / numTilesPerRow;
+                source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+                collisionOn = false;
+            }
+            else
+            {
+                value = 24;
+                int x = value % numTilesPerRow;
+                int y = value / numTilesPerRow;
+                source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+                collisionOn = true;
             }
         }
     }
