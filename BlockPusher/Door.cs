@@ -5,6 +5,11 @@ using System;
 
 namespace BlockPusher
 {
+    /// <summary>
+    /// Door class in charge of opening or closing doors
+    /// The class is a child of GameObject
+    /// Made by: Julius
+    /// </summary>
     internal class Door : GameObject
     {
         Rectangle destinationRectangle;
@@ -22,6 +27,13 @@ namespace BlockPusher
         public string Color { get => color; set => color = value; }
         public bool Active { get => active; set => active = value; }
 
+        /// <summary>
+        /// Constructor used to set the stats of the soor
+        /// </summary>
+        /// <param name="textureAtlas">The spritesheet of the object</param>
+        /// <param name="destinationRectangle">The location of the object</param>
+        /// <param name="source">The specific sprite from the spritesheet</param>
+        /// <param name="color">The color of the door, Used to figure out which button to interact with</param>
         public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, bool collision, string color)
         {
             this.textureAtlas = textureAtlas;
@@ -48,12 +60,19 @@ namespace BlockPusher
 
         }
 
+        /// <summary>
+        /// The main loop of the door
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
             
             DoorState();
         }
 
+        /// <summary>
+        /// Is in charge of controlling if the door is open or closed 
+        /// </summary>
         public void DoorState()
         {
             if (active == true)
