@@ -23,7 +23,7 @@ namespace BlockPusher
         //private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
         private float inputDelay = 0.2f;
         private float timeSinceLastInput = 0f;
-
+        private string moveDirection;
 
 
         // Properties //
@@ -42,10 +42,7 @@ namespace BlockPusher
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
-            //position = new Vector2(640, 640);
-            //speed = 300;
-            position = new Vector2(640, 640);
-            speed = 300;
+            
         }
 
 
@@ -93,6 +90,7 @@ namespace BlockPusher
             {
                 destinationRectangle.Location += new Point(0, -128);
                 timeSinceLastInput = 0f;
+                moveDirection = "up";
             }
             
             
@@ -100,7 +98,7 @@ namespace BlockPusher
             {
                 destinationRectangle.Location += new Point(0, 128);
                 timeSinceLastInput = 0f;
-                
+                moveDirection = "down";
             }
             
             
@@ -108,7 +106,7 @@ namespace BlockPusher
             {
                 destinationRectangle.Location += new Point(128, 0);
                 timeSinceLastInput = 0f;
-                
+                moveDirection = "right";
             }
             
             
@@ -116,9 +114,8 @@ namespace BlockPusher
             {
                 destinationRectangle.Location += new Point(-128, 0);
                 timeSinceLastInput = 0f;
-               
+                moveDirection = "left";
             }
-
 
             // When pressing R the Level resets
             if (keyState.IsKeyDown(Keys.R))
@@ -127,16 +124,38 @@ namespace BlockPusher
             }
 
         }
-
+        
 
         public override void OnCollision(GameObject other)
         {
+
             if (other is Wall)
             {
-
+                switch (moveDirection)
+                {
+                    case "right":
+                        {
+                            destinationRectangle.Location += new Point(-128, 0);
+                            break;
+                        }
+                    case "left":
+                        {
+                            destinationRectangle.Location += new Point(128, 0);
+                            break;
+                        }
+                    case "up":
+                        {
+                            destinationRectangle.Location += new Point(0, 128);
+                            break;
+                        }
+                    case "down":
+                        {
+                            destinationRectangle.Location += new Point(0, -128);
+                            break;
+                        }
+                }
             }
         }
-
 
         /// <summary>
         /// Makes it possible to rested the level
