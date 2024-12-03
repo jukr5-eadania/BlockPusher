@@ -39,35 +39,47 @@ namespace BlockPusher
     internal class Player : GameObject
     {
         // Field //
-        private Rectangle sourceRectangle;
-        private Rectangle destinationRectangle;
         private int spriteSize = 128;
         private int texAtlasWidth = 13; // the width of our tilesheet (counted by images)
         private int index; // default sprite
         private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
         private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
 
+        private float inputDelay = 0.2f;
+        private float timeSinceLastInput = 0f;
+
         Animation animation;
         private Dictionary<string, Animation> animations = new Dictionary<string, Animation>();
 
 
         // Properties //
+        Rectangle destinationRectangle;
+        Rectangle source;
         public override Rectangle collisionBox
         {
-            get
-            {
-                return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
-            }
+            get => destinationRectangle;
         }
+
+        // Properties //
+        //public override Rectangle collisionBox
+        //{
+        //    get
+        //    {
+        //        return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
+        //    }
+        //}
         // Methods //
 
         /// <summary>
         /// Constuctor used to set player stats
         /// </summary>
-        public Player()
-        {            
-            position = new Vector2(640, 640);            
-            speed = 300;
+        public Player(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source)
+        {
+            this.textureAtlas = textureAtlas;
+            this.destinationRectangle = destinationRectangle;
+            this.source = source;
+            //position = new Vector2(640, 640);
+            //speed = 300;
         }
 
         /// <summary>
@@ -88,9 +100,10 @@ namespace BlockPusher
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
             HandleInput();
             Move(gameTime);
-            animation.Update();
+            //animation.Update();
 
         }
 
@@ -101,11 +114,6 @@ namespace BlockPusher
         public override void Draw(SpriteBatch spriteBatch)
         {
             //destinationRectangle = new Rectangle(640, 640, spriteSize, spriteSize);
-            
-            spriteBatch.Draw(textureAtlas, position, animation.GetFrame(), Color.White);
-
-
-
 
             ////spriteSize = 128;
             //index = (int)PlayerSprite.WalkFront_0; // default sprite
@@ -117,6 +125,9 @@ namespace BlockPusher
 
             //// only draw the area within the sourceRectangle
             //spriteBatch.Draw(textureAtlas, position, sourceRectangle, Color.White);
+            // only draw the area within the sourceRectangle
+            //spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 1);
             base.Draw(spriteBatch);
         }
 
@@ -125,38 +136,55 @@ namespace BlockPusher
         /// </summary>
         public void HandleInput()
         {
+            if (timeSinceLastInput < inputDelay)
+            {
+                return;
+            }
+
             // reset velocity to make sure we will stop moving, when no key is pressed
             velocity = Vector2.Zero;
-            
+
             // get the current keyboard state
             KeyboardState keyState = Keyboard.GetState();
 
             // Press W : Up
             if (keyState.IsKeyDown(Keys.W))
             {
-                velocity += new Vector2(0, -128);
-                animation = new Animation(3, 3, new Vector2(128, 128), 3, 5);
+                //velocity += new Vector2(0, -128);
+                //animation = new Animation(3, 3, new Vector2(128, 128), 3, 5);
+                //velocity += new Vector2(0, -1);
+                destinationRectangle.Location += new Point(0, -128);
+                timeSinceLastInput = 0f;
             }
 
             // Press S : Down
             if (keyState.IsKeyDown(Keys.S))
             {
-                velocity += new Vector2(0, 128);
-                animation = new Animation(3, 3, new Vector2(128, 128), 0, 5);
+                //    velocity += new Vector2(0, 128);
+                //    animation = new Animation(3, 3, new Vector2(128, 128), 0, 5);
+                //velocity += new Vector2(0, 1);
+                destinationRectangle.Location += new Point(0, 128);
+                timeSinceLastInput = 0f;
             }
 
             // Press A : Right
             if (keyState.IsKeyDown(Keys.D))
             {
-                velocity += new Vector2(128, 0);
-                animation = new Animation(3, 3, new Vector2(128, 128), 0, 7);
+                //velocity += new Vector2(128, 0);
+                //animation = new Animation(3, 3, new Vector2(128, 128), 0, 7);
+                //velocity += new Vector2(-1, 0);
+                destinationRectangle.Location += new Point(128, 0);
+                timeSinceLastInput = 0f;
             }
-            
+
             // Press D : Left
             if (keyState.IsKeyDown(Keys.A))
             {
-                velocity += new Vector2(-128, 0);                
-                animation = new Animation(3, 3, new Vector2(128, 128), 3, 7);
+                //velocity += new Vector2(-128, 0);
+                //animation = new Animation(3, 3, new Vector2(128, 128), 3, 7);
+                //velocity += new Vector2(1, 0);
+                destinationRectangle.Location += new Point(-128, 0);
+                timeSinceLastInput = 0f;
             }
 
 
@@ -180,7 +208,7 @@ namespace BlockPusher
         {
             if (other is Wall)
             {
-                
+
             }
         }
 
@@ -190,7 +218,7 @@ namespace BlockPusher
         /// </summary>
         public void ResetLevel()
         {
-           
+
         }
 
     }
