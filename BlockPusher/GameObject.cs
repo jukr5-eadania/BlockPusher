@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+
 
 namespace BlockPusher
 {
@@ -13,9 +15,10 @@ namespace BlockPusher
         public bool collisionOn = true;
         public bool goalPressed = false;
         protected Texture2D textureAtlas;
-
+        
         // Properties // 
         public virtual Rectangle collisionBox { get; }
+
 
         // Methods //
         public abstract void LoadContent(ContentManager content);
@@ -27,20 +30,6 @@ namespace BlockPusher
             //spriteBatch.Draw(null, Vector2.Zero, Color.White);
         }
 
-        /// <summary>
-        /// "Move" calculates the objects movement using gameTime, 
-        /// velocity and speed to find its new position.
-        /// </summary>
-        /// <param name="gameTime"></param>
-        protected void Move(GameTime gameTime)
-        {
-            // Calculate deltaTime based on the gameTime
-            float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-            //Move the object
-            position += ((velocity * speed) * deltaTime);
-
-        }
 
         /// <summary>
         /// Checks if there have been a collision between two objects
@@ -64,5 +53,6 @@ namespace BlockPusher
         {
 
         }
+
     }
 }
