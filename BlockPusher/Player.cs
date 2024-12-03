@@ -50,9 +50,7 @@ namespace BlockPusher
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
-            
         }
-
 
         /// <summary>
         /// Loads the sprites / the spritesheet
