@@ -362,7 +362,10 @@ namespace BlockPusher
                 }
             }
         }
-        // Checks if all goals have a box on them, runs win logic if they do
+
+        /// <summary>
+        /// Checks if all goals have a box on them, runs win logic if they do
+        /// </summary>
         private void CheckWin()
         {
             int goalCount = gameObjects.Count(x => x is Goal);
@@ -376,8 +379,7 @@ namespace BlockPusher
             }
             if (activeGoals >= goalCount)
             {
-                // Win logic here
-                Exit();
+                SetGameState(GameState.LevelSelect);
             }
         }
     }
