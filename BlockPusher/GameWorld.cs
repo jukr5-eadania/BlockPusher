@@ -22,10 +22,16 @@ namespace BlockPusher
         private List<GameObject> gameObjects = new List<GameObject>();
         private Texture2D collisionTexture;
 
+        private SpriteFont menuFont;
         private GameState _gameState = GameState.MainMenu;
         private int selectedMainMenuItem = 0;
         private string[] mainMenuItems = { "Start Game", "Exit" };
-        private SpriteFont menuFont;
+
+        private int selectedLevelMenuItem = 0;
+        private string[] levelMenuItems = { "level 1", "level 2", "level 3", "level 4", "level 5", "level 6", "level 7", "level 8", "level 9", "level 10", "Go Back" };
+
+        private float inputDelay = 0.2f;
+        private float timeSinceLastInput = 0f;
 
         private Dictionary<Vector3, int> tiles;
         private Dictionary<Vector3, int> objects;
@@ -77,6 +83,8 @@ namespace BlockPusher
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
+            timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
             switch (_gameState)
             {
                 case GameState.MainMenu:
@@ -84,7 +92,7 @@ namespace BlockPusher
                     break;
 
                 case GameState.LevelSelect:
-                    // Handle Level Select State (to be implemented later)
+                    UpdateLevelMenu();
                     break;
 
                 case GameState.Playing:
@@ -114,7 +122,7 @@ namespace BlockPusher
                     break;
 
                 case GameState.LevelSelect:
-                    // Draw Level Select screen (to be implemented)
+                    DrawLevelMenu();
                     break;
 
                 case GameState.Playing:
@@ -152,6 +160,11 @@ namespace BlockPusher
 
         private void UpdateMainMenu()
         {
+            if (timeSinceLastInput < inputDelay)
+            {
+                return;
+            }
+
             KeyboardState keyboardState = Keyboard.GetState();
 
             if (keyboardState.IsKeyDown(Keys.W))
@@ -160,20 +173,22 @@ namespace BlockPusher
                 if (selectedMainMenuItem < 0)
                 {
                     selectedMainMenuItem = 0;
-                    //menuItems.Length - 1
                 }
+                timeSinceLastInput = 0f;
             }
             else if (keyboardState.IsKeyDown(Keys.S))
             {
                 selectedMainMenuItem++;
                 if (selectedMainMenuItem >= mainMenuItems.Length)
                 {
-                    selectedMainMenuItem = 1;
+                    selectedMainMenuItem = mainMenuItems.Length - 1;
                 }
+                timeSinceLastInput = 0f;
             }
             else if (keyboardState.IsKeyDown(Keys.Enter))
             {
-                SelectMenuItem();
+                SelectMainMenuItem();
+                timeSinceLastInput = 0f;
             }
         }
 
@@ -186,16 +201,73 @@ namespace BlockPusher
             }
         }
 
-        private void SelectMenuItem()
+        private void SelectMainMenuItem()
         {
             switch (selectedMainMenuItem)
+            {
+                case 0: // Start Game
+                    SetGameState(GameState.LevelSelect);
+                    break;
+
+                case 1: // Exit
+                    Exit();
+                    break;
+            }
+        }
+
+        private void UpdateLevelMenu()
+        {
+            if (timeSinceLastInput < inputDelay)
+            {
+                return;
+            }
+
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                selectedLevelMenuItem--;
+                if (selectedLevelMenuItem < 0)
+                {
+                    selectedLevelMenuItem = 0;
+                }
+                timeSinceLastInput = 0f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.S))
+            {
+                selectedLevelMenuItem++;
+                if (selectedLevelMenuItem >= levelMenuItems.Length)
+                {
+                    selectedLevelMenuItem = levelMenuItems.Length - 1;
+                }
+                timeSinceLastInput = 0f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                SelectLevelMenuItem();
+                timeSinceLastInput = 0f;
+            }
+        }
+
+        private void DrawLevelMenu()
+        {
+            for (int i = 0; i < levelMenuItems.Length; i++)
+            {
+                Color itemColor = i == selectedLevelMenuItem ? Color.HotPink : Color.White;
+                _spriteBatch.DrawString(menuFont, levelMenuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(levelMenuItems[i]).X / 2, 150 + i * 40), itemColor);
+            }
+        }
+
+        private void SelectLevelMenuItem()
+        {
+            switch (selectedLevelMenuItem)
             {
                 case 0: // Start Game
                     SetGameState(GameState.Playing);
                     break;
 
-                case 1: // Exit
-                    Exit();
+                case 10: // Exit
+                    SetGameState(GameState.MainMenu);
                     break;
             }
         }
