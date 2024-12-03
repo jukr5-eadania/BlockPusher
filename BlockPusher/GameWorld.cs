@@ -8,6 +8,13 @@ using System.Linq;
 
 namespace BlockPusher
 {
+    public enum GameState
+    {
+        MainMenu,
+        LevelSelect,
+        Playing
+    }
+
     public class GameWorld : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -15,11 +22,14 @@ namespace BlockPusher
         private List<GameObject> gameObjects = new List<GameObject>();
         private Texture2D collisionTexture;
 
+        private GameState _gameState = GameState.MainMenu;
+        private int selectedMenuItem = 0;
+        private string[] menuItems = { "Start Game", "Exit" };
+        private SpriteFont menuFont;
+
         private Dictionary<Vector3, int> tiles;
         private Dictionary<Vector3, int> objects;
         private Texture2D textureAtlas;
-
-        //private List<Door> doors = new();
 
         public static int Height { get; set; }
         public static int Width { get; set; }
@@ -53,6 +63,7 @@ namespace BlockPusher
                 gameObject.LoadContent(Content);
             }
 
+            menuFont = Content.Load<SpriteFont>("MenuFont");
 
             textureAtlas = Content.Load<Texture2D>("tilesheet");
             tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
@@ -65,6 +76,21 @@ namespace BlockPusher
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
+            switch (_gameState)
+            {
+                case GameState.MainMenu:
+                    UpdateMainMenu();
+                    break;
+
+                case GameState.LevelSelect:
+                    // Handle Level Select State (to be implemented later)
+                    break;
+
+                case GameState.Playing:
+                    // Handle Playing State
+                    break;
+            }
 
             foreach (GameObject gameObject in gameObjects)
             {
@@ -83,6 +109,21 @@ namespace BlockPusher
 
             _spriteBatch.Begin(SpriteSortMode.BackToFront);
 
+            switch (_gameState)
+            {
+                case GameState.MainMenu:
+                    DrawMainMenu();
+                    break;
+
+                case GameState.LevelSelect:
+                    // Draw Level Select screen (to be implemented)
+                    break;
+
+                case GameState.Playing:
+                    // Draw the gameplay (as per your existing code)
+                    break;
+            }
+
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.Draw(_spriteBatch);
@@ -93,6 +134,69 @@ namespace BlockPusher
 
             base.Draw(gameTime);
         }
+
+        public void SetGameState(GameState gameState)
+        {
+            if (gameState != _gameState)
+            {
+                _gameState = gameState;
+                switch (gameState)
+                {
+                    case GameState.MainMenu:
+                        break;
+
+                    case GameState.LevelSelect:
+                        break;
+
+                    case GameState.Playing:
+                        break;
+                }
+            }
+        }
+
+        private void UpdateMainMenu()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Up))
+            {
+                selectedMenuItem--;
+                if (selectedMenuItem < 0) selectedMenuItem = menuItems.Length - 1;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down))
+            {
+                selectedMenuItem++;
+                if (selectedMenuItem >= menuItems.Length) selectedMenuItem = 0;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                SelectMenuItem();
+            }
+        }
+
+        private void DrawMainMenu()
+        {
+            for (int i = 0; i < menuItems.Length; i++)
+            {
+                Color itemColor = i == selectedMenuItem ? Color.Yellow : Color.White;
+                _spriteBatch.DrawString(menuFont, menuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(menuItems[i]).X / 2, 150 + i * 40), itemColor);
+            }
+        }
+
+        private void SelectMenuItem()
+        {
+            switch (selectedMenuItem)
+            {
+                case 0: // Start Game
+                    SetGameState(GameState.LevelSelect);
+                    break;
+
+                case 1: // Exit
+                    Exit();
+                    break;
+            }
+        }
+
         private void DrawCollisionBox(GameObject go)
         {
 
