@@ -23,8 +23,8 @@ namespace BlockPusher
         private Texture2D collisionTexture;
 
         private GameState _gameState = GameState.MainMenu;
-        private int selectedMenuItem = 0;
-        private string[] menuItems = { "Start Game", "Exit" };
+        private int selectedMainMenuItem = 0;
+        private string[] mainMenuItems = { "Start Game", "Exit" };
         private SpriteFont menuFont;
 
         private Dictionary<Vector3, int> tiles;
@@ -88,19 +88,17 @@ namespace BlockPusher
                     break;
 
                 case GameState.Playing:
-                    // Handle Playing State
+                    foreach (GameObject gameObject in gameObjects)
+                    {
+                        gameObject.Update(gameTime);
+                        foreach (GameObject other in gameObjects)
+                        {
+                            gameObject.CheckCollision(other);
+                        }
+                    }
+                    CheckWin();
                     break;
             }
-
-            foreach (GameObject gameObject in gameObjects)
-            {
-                gameObject.Update(gameTime);
-                foreach (GameObject other in gameObjects)
-                {
-                    gameObject.CheckCollision(other);
-                }
-            }
-            CheckWin();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -120,14 +118,12 @@ namespace BlockPusher
                     break;
 
                 case GameState.Playing:
-                    // Draw the gameplay (as per your existing code)
+                    foreach (GameObject gameObject in gameObjects)
+                    {
+                        gameObject.Draw(_spriteBatch);
+                        DrawCollisionBox(gameObject);
+                    }
                     break;
-            }
-
-            foreach (GameObject gameObject in gameObjects)
-            {
-                gameObject.Draw(_spriteBatch);
-                DrawCollisionBox(gameObject);
             }
 
             _spriteBatch.End();
@@ -158,15 +154,22 @@ namespace BlockPusher
         {
             KeyboardState keyboardState = Keyboard.GetState();
 
-            if (keyboardState.IsKeyDown(Keys.Up))
+            if (keyboardState.IsKeyDown(Keys.W))
             {
-                selectedMenuItem--;
-                if (selectedMenuItem < 0) selectedMenuItem = menuItems.Length - 1;
+                selectedMainMenuItem--;
+                if (selectedMainMenuItem < 0)
+                {
+                    selectedMainMenuItem = 0;
+                    //menuItems.Length - 1
+                }
             }
-            else if (keyboardState.IsKeyDown(Keys.Down))
+            else if (keyboardState.IsKeyDown(Keys.S))
             {
-                selectedMenuItem++;
-                if (selectedMenuItem >= menuItems.Length) selectedMenuItem = 0;
+                selectedMainMenuItem++;
+                if (selectedMainMenuItem >= mainMenuItems.Length)
+                {
+                    selectedMainMenuItem = 1;
+                }
             }
             else if (keyboardState.IsKeyDown(Keys.Enter))
             {
@@ -176,19 +179,19 @@ namespace BlockPusher
 
         private void DrawMainMenu()
         {
-            for (int i = 0; i < menuItems.Length; i++)
+            for (int i = 0; i < mainMenuItems.Length; i++)
             {
-                Color itemColor = i == selectedMenuItem ? Color.Yellow : Color.White;
-                _spriteBatch.DrawString(menuFont, menuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(menuItems[i]).X / 2, 150 + i * 40), itemColor);
+                Color itemColor = i == selectedMainMenuItem ? Color.HotPink : Color.White;
+                _spriteBatch.DrawString(menuFont, mainMenuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(mainMenuItems[i]).X / 2, 150 + i * 40), itemColor);
             }
         }
 
         private void SelectMenuItem()
         {
-            switch (selectedMenuItem)
+            switch (selectedMainMenuItem)
             {
                 case 0: // Start Game
-                    SetGameState(GameState.LevelSelect);
+                    SetGameState(GameState.Playing);
                     break;
 
                 case 1: // Exit

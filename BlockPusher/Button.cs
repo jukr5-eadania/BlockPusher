@@ -15,7 +15,6 @@ namespace BlockPusher
     {
         Rectangle destinationRectangle;
         Rectangle source;
-        private bool active;
         public static List<Door> doors = new();
         private string color;
         public override Rectangle collisionBox
