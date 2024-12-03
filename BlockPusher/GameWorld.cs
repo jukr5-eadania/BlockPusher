@@ -19,6 +19,8 @@ namespace BlockPusher
         private Dictionary<Vector3, int> objects;
         private Texture2D textureAtlas;
 
+        private Player player = new Player(new Vector2(640, 640));
+
         public static int Height { get; set; }
         public static int Width { get; set; }
 
