@@ -8,6 +8,13 @@ using System.Collections.Generic;
 
 namespace BlockPusher
 {
+    enum PlayerSprite
+    {
+        Front = 65,
+        Back = 68,
+        Right = 91,
+        Left = 94
+    }
 
     /// <summary>
     /// The player class controls the player 
@@ -17,13 +24,14 @@ namespace BlockPusher
         // Field //
         private int spriteSize = 128;
         private int texAtlasWidth = 13; // the width of our tilesheet (counted by images)
-        //private int index; // default sprite
-        //private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
-        //private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
-        //private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
+        
         private float inputDelay = 0.2f;
         private float timeSinceLastInput = 0f;
         private string moveDirection;
+
+        private int pixelTileSize = 128;
+        int numTilesPerRow = 13;
+        int value;
 
 
         // Properties //
@@ -82,7 +90,6 @@ namespace BlockPusher
                 return;
             }
 
-
             // get the current keyboard state
             KeyboardState keyState = Keyboard.GetState();
             
@@ -91,30 +98,32 @@ namespace BlockPusher
                 destinationRectangle.Location += new Point(0, -128);
                 timeSinceLastInput = 0f;
                 moveDirection = "up";
+                Animation("up");
+                
             }
-            
             
             if (keyState.IsKeyDown(Keys.S))
             {
                 destinationRectangle.Location += new Point(0, 128);
                 timeSinceLastInput = 0f;
                 moveDirection = "down";
+                Animation("down");
             }
-            
             
             if (keyState.IsKeyDown(Keys.D))
             {
                 destinationRectangle.Location += new Point(128, 0);
                 timeSinceLastInput = 0f;
                 moveDirection = "right";
+                Animation("right");
             }
-            
             
             if (keyState.IsKeyDown(Keys.A))
             {
                 destinationRectangle.Location += new Point(-128, 0);
                 timeSinceLastInput = 0f;
                 moveDirection = "left";
+                Animation("left");
             }
 
             // When pressing R the Level resets
@@ -122,7 +131,6 @@ namespace BlockPusher
             {
                 ResetLevel();
             }
-
         }
         
 
@@ -155,6 +163,43 @@ namespace BlockPusher
                         }
                 }
             }
+        }
+
+        public void Animation(string direction)
+        {
+            
+            switch (direction)
+            {
+                case "up":
+                    {
+                        value = (int)PlayerSprite.Back;
+                        break;
+                    }
+                case "down":
+                    {
+                        value = (int)PlayerSprite.Front;
+                        break;
+                    }
+                case "left":
+                    {
+                        value = (int)PlayerSprite.Left;
+                        break;
+                    }
+                case "right":
+                    {
+                        value = (int)PlayerSprite.Right;
+                        break;
+                    }
+                case null:
+                    {
+                        
+                        break;
+                    }
+            }
+            
+            int x = value % numTilesPerRow;
+            int y = value / numTilesPerRow;
+            source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
         }
 
         /// <summary>

@@ -16,6 +16,7 @@ namespace BlockPusher
         public bool goalPressed = false;
         protected Texture2D textureAtlas;
         
+
         // Properties // 
         public virtual Rectangle collisionBox { get; }
 
