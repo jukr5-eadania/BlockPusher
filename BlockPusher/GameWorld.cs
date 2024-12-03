@@ -147,17 +147,17 @@ namespace BlockPusher
             foreach (var item in ground)
             {
                 // Adjust to scale level size
-                int displayTilesize = 128;
+                int displayTileSize = 128;
                 int numTilesPerRow = 13;
-                int pixelTilesize = 128;
+                int pixelTileSize = 128;
 
-                Rectangle destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
+                Rectangle destinationRectange = new((int)item.Key.X * displayTileSize, (int)item.Key.Y * displayTileSize, displayTileSize, displayTileSize);
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
                 bool collision = (item.Value != 89);
 
-                Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+                Rectangle source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
 
                 if (item.Value == 3)
                 {
