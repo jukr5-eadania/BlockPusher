@@ -8,6 +8,9 @@ using System.Linq;
 
 namespace BlockPusher
 {
+    /// <summary>
+    /// Enum used to decide what state the game is in
+    /// </summary>
     public enum GameState
     {
         MainMenu,
@@ -15,6 +18,11 @@ namespace BlockPusher
         Playing
     }
 
+    /// <summary>
+    /// "GameWorld" is the main class. It is here we "create" the game by initializing objects and loading in the content we need to 
+    /// make the visual of the game. It is in charge of the main game loop.
+    /// Made by: Julius, Emilie, Mads
+    /// </summary>
     public class GameWorld : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -135,6 +143,11 @@ namespace BlockPusher
             base.Draw(gameTime);
         }
 
+        /// <summary>
+        /// Sets the gamestate based with enums based on input with parameter
+        /// -Julius
+        /// </summary>
+        /// <param name="gameState">The gamestate as enum</param>
         public void SetGameState(GameState gameState)
         {
             if (gameState != _gameState)
@@ -143,6 +156,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Controls the main menu based on player input
+        /// -Julius
+        /// </summary>
         private void UpdateMainMenu()
         {
             if (timeSinceLastInput < inputDelay)
@@ -177,6 +194,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Draws the main menu for the player to see
+        /// -Julius
+        /// </summary>
         private void DrawMainMenu()
         {
             for (int i = 0; i < mainMenuItems.Length; i++)
@@ -186,6 +207,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Decides what each option in the main menu does based on player selection
+        /// -Julius
+        /// </summary>
         private void SelectMainMenuItem()
         {
             switch (selectedMainMenuItem)
@@ -200,6 +225,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Controls the level select menu based on player input
+        /// -Julius
+        /// </summary>
         private void UpdateLevelMenu()
         {
             if (timeSinceLastInput < inputDelay)
@@ -234,6 +263,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Draws the level select menu for the player to see
+        /// -Julius
+        /// </summary>
         private void DrawLevelMenu()
         {
             for (int i = 0; i < levelMenuItems.Length; i++)
@@ -243,6 +276,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Decides what each option in the level select menu does based on player selection
+        /// -Julius
+        /// </summary>
         private void SelectLevelMenuItem()
         {
             switch (selectedLevelMenuItem)
@@ -297,6 +334,11 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Loads levels based on what level the player selected in the level selection menu
+        /// -Julius
+        /// </summary>
+        /// <param name="lvl">Used to specify what level need to be loaded</param>
         public void LoadLevel(int lvl)
         {
             switch (lvl)
@@ -363,6 +405,7 @@ namespace BlockPusher
             }
             return result;
         }
+
         /// <summary>
         /// Adds tiles to list of gameobjects
         /// </summary>
