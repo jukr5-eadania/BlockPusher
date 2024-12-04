@@ -72,16 +72,12 @@ namespace BlockPusher
             menuFont = Content.Load<SpriteFont>("MenuFont");
 
             textureAtlas = Content.Load<Texture2D>("tilesheet");
-            tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
-            objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
-            AddTiles(tiles);
-            AddTiles(objects);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) && _gameState == GameState.Playing)
+                SetGameState(GameState.MainMenu);
 
             timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -144,17 +140,6 @@ namespace BlockPusher
             if (gameState != _gameState)
             {
                 _gameState = gameState;
-                switch (gameState)
-                {
-                    case GameState.MainMenu:
-                        break;
-
-                    case GameState.LevelSelect:
-                        break;
-
-                    case GameState.Playing:
-                        break;
-                }
             }
         }
 
@@ -262,14 +247,75 @@ namespace BlockPusher
         {
             switch (selectedLevelMenuItem)
             {
-                case 0: // Start Game
+                case 0:
+                    gameObjects.Clear();
+                    LoadLevel(0);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 10: // Exit
+                case 1:
+                    gameObjects.Clear();
+                    LoadLevel(1);
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 2: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 3: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 4:
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 5:
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 6: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 7: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 8: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 9: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 10: 
                     SetGameState(GameState.MainMenu);
                     break;
             }
+        }
+
+        public void LoadLevel(int lvl)
+        {
+            switch (lvl)
+            {
+                case 0:
+                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 1:
+                    tiles = LoadMap("../../../Content/MapData/Level1_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level1_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+            }
+            
         }
 
         private void DrawCollisionBox(GameObject go)
