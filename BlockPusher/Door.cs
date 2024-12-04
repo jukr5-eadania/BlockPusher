@@ -16,7 +16,7 @@ namespace BlockPusher
         Rectangle source;
         private string color;
         private bool active;
-        int pixelTilesize = 128;
+        int pixelTileSize = 128;
         int numTilesPerRow = 13;
         int value = 24;
         
@@ -80,7 +80,7 @@ namespace BlockPusher
                 value = 12;
                 int x = value % numTilesPerRow;
                 int y = value / numTilesPerRow;
-                source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+                source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
                 collisionOn = false;
             }
             else
@@ -88,7 +88,7 @@ namespace BlockPusher
                 value = 24;
                 int x = value % numTilesPerRow;
                 int y = value / numTilesPerRow;
-                source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+                source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
                 collisionOn = true;
             }
         }
