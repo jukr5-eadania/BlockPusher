@@ -124,11 +124,6 @@ namespace BlockPusher
                 Animation("left");
             }
 
-            // When pressing R the Level resets
-            if (keyState.IsKeyDown(Keys.R))
-            {
-                ResetLevel();
-            }
         }
         
 
@@ -198,14 +193,6 @@ namespace BlockPusher
             int x = value % numTilesPerRow;
             int y = value / numTilesPerRow;
             source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
-        }
-
-        /// <summary>
-        /// Makes it possible to rested the level
-        /// </summary>
-        public void ResetLevel()
-        {
-
         }
 
     }
