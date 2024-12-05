@@ -130,7 +130,7 @@ namespace BlockPusher
         public override void OnCollision(GameObject other)
         {
 
-            if (other is Tiles.Wall)
+            if (other is Tiles.Wall || other is Tiles.Door)
             {
                 switch (moveDirection)
                 {

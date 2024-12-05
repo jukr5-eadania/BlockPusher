@@ -59,7 +59,7 @@ namespace BlockPusher
             _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            translation = Matrix.CreateScale(0.1f);
+            translation = Matrix.CreateScale(1f);
         }
 
         protected override void Initialize()
@@ -80,7 +80,11 @@ namespace BlockPusher
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) && _gameState == GameState.Playing)
+            {
                 SetGameState(GameState.MainMenu);
+                translation = Matrix.CreateScale(1f);
+            }
+
 
             timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -282,44 +286,70 @@ namespace BlockPusher
                 case 0:
                     gameObjects.Clear();
                     LoadLevel(0);
+                    translation = Matrix.CreateScale(0.75f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 1:
                     gameObjects.Clear();
                     LoadLevel(1);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 2: 
+                case 2:
+                    gameObjects.Clear();
+                    LoadLevel(2);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 3: 
+                case 3:
+                    gameObjects.Clear();
+                    LoadLevel(3);
+                    translation = Matrix.CreateScale(0.7f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 4:
+                    gameObjects.Clear();
+                    LoadLevel(4);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 5:
+                    gameObjects.Clear();
+                    LoadLevel(5);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 6: 
+                case 6:
+                    gameObjects.Clear();
+                    LoadLevel(6);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 7: 
+                case 7:
+                    gameObjects.Clear();
+                    LoadLevel(7);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 8: 
+                case 8:
+                    gameObjects.Clear();
+                    LoadLevel(8);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 9: 
+                case 9:
+                    gameObjects.Clear();
+                    LoadLevel(9);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
@@ -339,20 +369,75 @@ namespace BlockPusher
             switch (lvl)
             {
                 case 0:
-                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
-                    AddTiles(tiles);
-                    AddTiles(objects);
-                    break;
-
-                case 1:
                     tiles = LoadMap("../../../Content/MapData/Level1_Tiles.csv", 0);
                     objects = LoadMap("../../../Content/MapData/Level1_Obj.csv", 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
+
+                case 1:
+                    tiles = LoadMap("../../../Content/MapData/Level2_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level2_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 2:
+                    tiles = LoadMap("../../../Content/MapData/Level3_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level3_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 3:
+                    tiles = LoadMap("../../../Content/MapData/Level4_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level4_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 4:
+                    tiles = LoadMap("../../../Content/MapData/Level5_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level5_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 5:
+                    tiles = LoadMap("../../../Content/MapData/Level6_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level6_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 6:
+                    tiles = LoadMap("../../../Content/MapData/Level7_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level7_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 7:
+                    tiles = LoadMap("../../../Content/MapData/Level8_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level8_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 8:
+                    tiles = LoadMap("../../../Content/MapData/Level9_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level9_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 9:
+                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
             }
-            
         }
 
         private void DrawCollisionBox(GameObject go)
@@ -438,7 +523,6 @@ namespace BlockPusher
                 else if (item.Value == 25)
                 {
                     gameObjects.Add(new Tiles.Button(textureAtlas, destinationRectange, source, "orange"));
-                    gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
 
                 }
                 else if (item.Value == 86)
@@ -477,6 +561,7 @@ namespace BlockPusher
             }
             if (activeGoals >= goalCount)
             {
+                translation = Matrix.CreateScale(1f);
                 SetGameState(GameState.LevelSelect);
             }
         }
