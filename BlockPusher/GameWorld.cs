@@ -64,7 +64,6 @@ namespace BlockPusher
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            //gameObjects.Add(new Player());
             base.Initialize();
         }
 
@@ -72,13 +71,7 @@ namespace BlockPusher
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             collisionTexture = Content.Load<Texture2D>("pixel");
-            foreach (GameObject gameObject in gameObjects)
-            {
-                gameObject.LoadContent(Content);
-            }
-
             menuFont = Content.Load<SpriteFont>("MenuFont");
-
             textureAtlas = Content.Load<Texture2D>("tilesheet");
         }
 
