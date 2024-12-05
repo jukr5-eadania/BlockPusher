@@ -44,6 +44,7 @@ namespace BlockPusher
         private Dictionary<Vector3, int> tiles;
         private Dictionary<Vector3, int> objects;
         private Texture2D textureAtlas;
+        private Matrix translation;
 
         public static int Height { get; set; }
         public static int Width { get; set; }
@@ -58,6 +59,7 @@ namespace BlockPusher
             _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            translation = Matrix.CreateScale(0.1f);
         }
 
         protected override void Initialize()
@@ -110,7 +112,7 @@ namespace BlockPusher
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin(SpriteSortMode.BackToFront);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: translation);
 
             switch (_gameState)
             {
