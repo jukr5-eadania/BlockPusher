@@ -19,7 +19,7 @@ namespace BlockPusher
     /// <summary>
     /// The player class controls the player 
     /// </summary>
-    internal class Player : GameObject
+    public class Player : GameObject
     {
         // Field //
         private int spriteSize = 128;
@@ -27,7 +27,7 @@ namespace BlockPusher
         
         private float inputDelay = 0.2f;
         private float timeSinceLastInput = 0f;
-        private string moveDirection;
+        
 
         private int pixelTileSize = 128;
         int numTilesPerRow = 13;
@@ -156,6 +156,35 @@ namespace BlockPusher
                         }
                 }
             }
+        }
+        public void BoxCollision()
+        {
+
+           
+            
+                switch (moveDirection)
+                {
+                    case "right":
+                        {
+                            destinationRectangle.Location += new Point(-128, 0);
+                            break;
+                        }
+                    case "left":
+                        {
+                            destinationRectangle.Location += new Point(128, 0);
+                            break;
+                        }
+                    case "up":
+                        {
+                            destinationRectangle.Location += new Point(0, 128);
+                            break;
+                        }
+                    case "down":
+                        {
+                            destinationRectangle.Location += new Point(0, -128);
+                            break;
+                        }
+                }
         }
 
         public void Animation(string direction)
