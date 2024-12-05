@@ -14,6 +14,7 @@ namespace BlockPusher
         public bool goalPressed = false;
         protected Texture2D textureAtlas;
         protected List<GameObject> collidingObjects = new();
+        public bool collisionOn = true;
 
         // Properties // 
         public virtual Rectangle collisionBox { get; }
@@ -54,7 +55,7 @@ namespace BlockPusher
                 OnCollisionEnter(other);
                 collidingObjects.Add(other);
             }
-            else if (collisionBox.Intersects(other.collisionBox) && other != this && other.collisionOn)
+            else if (collisionBox.Intersects(other.collisionBox) && other != this)
             {
                 OnCollision(other);
             }

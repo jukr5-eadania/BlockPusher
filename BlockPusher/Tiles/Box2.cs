@@ -92,7 +92,7 @@ namespace BlockPusher.Tiles
                         }
                 }
             }
-            else if (other is Wall || other is Box2 || other is Door)
+            else if (other is Wall || other is Box2 || (other is Door && other.collisionOn))
             {
                 sliding = false;
                 moving = false;
