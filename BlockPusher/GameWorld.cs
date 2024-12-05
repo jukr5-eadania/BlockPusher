@@ -533,7 +533,7 @@ namespace BlockPusher
                 {
                     gameObjects.Add(new Tiles.Box2(textureAtlas, destinationRectange, source));
                 }
-                else if (item.Value == 102)
+                else if (item.Value == 102 || item.Value == 103)
                 {
                     gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
                 }
@@ -548,11 +548,11 @@ namespace BlockPusher
                     gameObjects.Add(buttonOrange);
                     Tiles.Door.buttons.Add(buttonOrange);
                 }
-                else if (item.Value == 86)
+                else if (item.Value == 89)
                 {
                     gameObjects.Add(new Tiles.Ice(textureAtlas, destinationRectange, source));
                 }
-                else if (item.Value == 89)
+                else if (item.Value == 90)
                 {
                     gameObjects.Add(new Tiles.Floor(textureAtlas, destinationRectange, source));
 
