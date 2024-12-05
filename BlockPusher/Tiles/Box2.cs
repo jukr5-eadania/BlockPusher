@@ -132,34 +132,5 @@ namespace BlockPusher.Tiles
                 sliding = true;
             }
         }
-
-        static string CheckPlayerPosition(Vector2 a, Point b)
-        {
-            Vector2 bVector = new Vector2(b.X, b.Y);
-            var delta = a - bVector;
-
-            if (Math.Abs(delta.X) >= Math.Abs(delta.Y))
-            {
-                if (delta.X >= 0)
-                {
-                    return "right";
-                }
-                else
-                {
-                    return "left";
-                }
-            }
-            else
-            {
-                if (delta.Y <= 0)
-                {
-                    return "up";
-                }
-                else
-                {
-                    return "down";
-                }
-            }
-        }
     }
 }
