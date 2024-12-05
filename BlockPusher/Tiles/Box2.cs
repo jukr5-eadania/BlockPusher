@@ -8,11 +8,12 @@ namespace BlockPusher.Tiles
 {
     internal class Box2 : GameObject
     {
-        Rectangle destinationRectangle;
-        Rectangle source;
-        public string moveDirection;
-        bool sliding;
-        bool moving;
+        private Rectangle destinationRectangle;
+        private Rectangle source;
+        private Player player;
+        private string boxMoveDirection;
+        private bool sliding;
+        private bool moving;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
@@ -36,24 +37,24 @@ namespace BlockPusher.Tiles
         {
             if (sliding && moving)
             {
-                switch (moveDirection)
+                switch (boxMoveDirection)
                 {
-                    case "right":
+                    case "left":
                         {
                             destinationRectangle.Location += new Point(-128, 0);
                             break;
                         }
-                    case "left":
+                    case "right":
                         {
                             destinationRectangle.Location += new Point(128, 0);
                             break;
                         }
-                    case "up":
+                    case "down":
                         {
                             destinationRectangle.Location += new Point(0, 128);
                             break;
                         }
-                    case "down":
+                    case "up":
                         {
                             destinationRectangle.Location += new Point(0, -128);
                             break;
@@ -66,26 +67,27 @@ namespace BlockPusher.Tiles
         {
             if (other is Player)
             {
+                player = (Player)other;
                 moving = true;
-                moveDirection = CheckPlayerPosition(other.position, destinationRectangle.Location);
-                switch (moveDirection)
+                boxMoveDirection = other.moveDirection;
+                switch (boxMoveDirection)
                 {
-                    case "right":
+                    case "left":
                         {
                             destinationRectangle.Location += new Point(-128, 0);
                             break;
                         }
-                    case "left":
+                    case "right":
                         {
                             destinationRectangle.Location += new Point(128, 0);
                             break;
                         }
-                    case "up":
+                    case "down":
                         {
                             destinationRectangle.Location += new Point(0, 128);
                             break;
                         }
-                    case "down":
+                    case "up":
                         {
                             destinationRectangle.Location += new Point(0, -128);
                             break;
@@ -96,29 +98,30 @@ namespace BlockPusher.Tiles
             {
                 sliding = false;
                 moving = false;
-                switch (moveDirection)
+                switch (boxMoveDirection)
                 {
-                    case "right":
+                    case "left":
                         {
                             destinationRectangle.Location += new Point(128, 0);
                             break;
                         }
-                    case "left":
+                    case "right":
                         {
                             destinationRectangle.Location += new Point(-128, 0);
                             break;
                         }
-                    case "up":
+                    case "down":
                         {
                             destinationRectangle.Location += new Point(0, -128);
                             break;
                         }
-                    case "down":
+                    case "up":
                         {
                             destinationRectangle.Location += new Point(0, 128);
                             break;
                         }
                 }
+                player.BoxCollision();
             }
             else if (other is Floor)
             {

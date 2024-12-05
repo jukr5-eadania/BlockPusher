@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace BlockPusher
 {
-    abstract class GameObject
+    public abstract class GameObject
     {
         // Field //
         protected Vector2 velocity;
@@ -16,6 +16,7 @@ namespace BlockPusher
         protected Texture2D textureAtlas;
         protected List<GameObject> collidingObjects = new();
         public bool collisionOn = true;
+        public string moveDirection;
 
         // Properties // 
         public virtual Rectangle collisionBox { get; }
@@ -38,14 +39,14 @@ namespace BlockPusher
         /// <param name="other"> name of the other object that is collided with </param>
         public virtual void CheckCollision(GameObject other)
         {
+            if (collisionBox.Intersects(other.collisionBox) && other != this)
+            {
+                OnCollision(other);
+            }
             if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
             {
                 OnCollisionEnter(other);
                 collidingObjects.Add(other);
-            }
-            else if (collisionBox.Intersects(other.collisionBox) && other != this)
-            {
-                OnCollision(other);
             }
             else if (collidingObjects.Contains(other))
             {
