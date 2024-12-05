@@ -1,8 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
 
 namespace BlockPusher.Tiles
 {
@@ -13,8 +10,6 @@ namespace BlockPusher.Tiles
     /// </summary>
     internal class Button : GameObject
     {
-        Rectangle destinationRectangle;
-        Rectangle source;
         private string color;
         private bool active;
         public override Rectangle collisionBox
@@ -42,11 +37,6 @@ namespace BlockPusher.Tiles
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
-
         }
 
         /// <summary>

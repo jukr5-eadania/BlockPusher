@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -49,6 +48,9 @@ namespace BlockPusher
         public static int Height { get; set; }
         public static int Width { get; set; }
 
+        /// <summary>
+        /// "GameWorld()" is the window the game runs in.
+        /// </summary>
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -62,6 +64,9 @@ namespace BlockPusher
             translation = Matrix.CreateScale(1f);
         }
 
+        /// <summary>
+        /// "Initialize" creates the objects
+        /// </summary>
         protected override void Initialize()
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
@@ -69,6 +74,9 @@ namespace BlockPusher
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads our game content in order to give the objects sprites
+        /// </summary>
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -77,6 +85,10 @@ namespace BlockPusher
             textureAtlas = Content.Load<Texture2D>("tilesheet");
         }
 
+        /// <summary>
+        /// The main loop of the game
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) && _gameState == GameState.Playing)
@@ -112,6 +124,10 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// "Draw" is called regulary to take the current game stat and draw what we want on the screen
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -132,7 +148,9 @@ namespace BlockPusher
                     foreach (GameObject gameObject in gameObjects)
                     {
                         gameObject.Draw(_spriteBatch);
+#if DEBUG
                         DrawCollisionBox(gameObject);
+#endif
                     }
                     break;
             }
@@ -441,9 +459,12 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// draws the red collision box
+        /// </summary>
+        /// <param name="go">Parameter for gameobjects</param>
         private void DrawCollisionBox(GameObject go)
         {
-
             Rectangle collisionBox = go.collisionBox;
             Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
             Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
@@ -458,6 +479,7 @@ namespace BlockPusher
 
         /// <summary>
         /// Returns every position and type of tile from given tilemap
+        /// -Mads
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
@@ -489,6 +511,7 @@ namespace BlockPusher
 
         /// <summary>
         /// Adds tiles to list of gameobjects
+        /// -Mads
         /// </summary>
         /// <param name="ground"></param>
         private void AddTiles(Dictionary<Vector3, int> ground)
@@ -548,6 +571,7 @@ namespace BlockPusher
 
         /// <summary>
         /// Checks if all goals have a box on them, runs win logic if they do
+        /// -Mads
         /// </summary>
         private void CheckWin()
         {

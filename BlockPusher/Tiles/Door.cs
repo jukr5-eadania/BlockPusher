@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
 
 namespace BlockPusher.Tiles
@@ -13,8 +11,6 @@ namespace BlockPusher.Tiles
     /// </summary>
     internal class Door : GameObject
     {
-        Rectangle destinationRectangle;
-        Rectangle source;
         private string color;
         public static List<Button> buttons = new();
         private bool active;
@@ -26,8 +22,6 @@ namespace BlockPusher.Tiles
         {
             get => destinationRectangle;
         }
-        public string Color { get => color; set => color = value; }
-        public bool Active { get => active; set => active = value; }
 
         /// <summary>
         /// Constructor used to set the stats of the soor
@@ -54,11 +48,6 @@ namespace BlockPusher.Tiles
             {
                 spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
             }
-        }
-
-        public override void LoadContent(ContentManager content)
-        {
-
         }
 
         /// <summary>
