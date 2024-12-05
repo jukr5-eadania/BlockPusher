@@ -97,7 +97,6 @@ namespace BlockPusher
                 translation = Matrix.CreateScale(1f);
             }
 
-
             timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             switch (_gameState)
