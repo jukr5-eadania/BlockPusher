@@ -43,10 +43,15 @@ namespace BlockPusher
             {
                 OnCollision(other);
             }
+
             if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
             {
                 OnCollisionEnter(other);
                 collidingObjects.Add(other);
+            }
+            else if (collisionBox.Intersects(other.collisionBox) && other != this)
+            {
+
             }
             else if (collidingObjects.Contains(other))
             {

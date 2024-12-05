@@ -65,7 +65,6 @@ namespace BlockPusher.Tiles
         /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
-            
             DoorState();
         }
 
