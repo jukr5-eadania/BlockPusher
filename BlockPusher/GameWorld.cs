@@ -153,33 +153,41 @@ namespace BlockPusher
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
-                bool collision = (item.Value != 89);
 
                 Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
 
                 if (item.Value == 3)
                 {
-                    gameObjects.Add(new Box2(textureAtlas, destinationRectange, source));
+                    gameObjects.Add(new Tiles.Box2(textureAtlas, destinationRectange, source));
                 }
                 else if (item.Value == 102)
                 {
-                    gameObjects.Add(new Goal(textureAtlas, destinationRectange, source));
+                    gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
+
+                }
+                else if (item.Value == 86)
+                {
+                    gameObjects.Add(new Tiles.Ice(textureAtlas, destinationRectange, source));
+                }
+                else if (item.Value == 89)
+                {
+                    gameObjects.Add(new Tiles.Floor(textureAtlas, destinationRectange, source));
 
                 }
                 else
                 {
-                    gameObjects.Add(new Wall(textureAtlas, destinationRectange, source, collision));
+                    gameObjects.Add(new Tiles.Wall(textureAtlas, destinationRectange, source));
                 }
             }
         }
         // Checks if all goals have a box on them, runs win logic if they do
         private void CheckWin()
         {
-            int goalCount = gameObjects.Count(x => x is Goal);
+            int goalCount = gameObjects.Count(x => x is Tiles.Goal);
             int activeGoals = 0;
             foreach (GameObject gameObject in gameObjects)
             {
-                if (gameObject is Goal && gameObject.goalPressed)
+                if (gameObject is Tiles.Goal && gameObject.goalPressed)
                 {
                     activeGoals++;
                 }

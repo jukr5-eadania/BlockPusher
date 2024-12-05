@@ -2,9 +2,9 @@
 using Microsoft.Xna.Framework.Content;
 using System;
 
-namespace BlockPusher
+namespace BlockPusher.Tiles
 {
-    internal class Button : GameObject
+    internal class Door : GameObject
     {
         public override void LoadContent(ContentManager content)
         {
