@@ -64,7 +64,7 @@ namespace BlockPusher
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            gameObjects.Add(new Player());
+            //gameObjects.Add(new Player());
             base.Initialize();
         }
 
@@ -423,31 +423,45 @@ namespace BlockPusher
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
-                bool collision = (item.Value != 89);
 
                 Rectangle source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
 
                 if (item.Value == 3)
                 {
-                    gameObjects.Add(new Box2(textureAtlas, destinationRectange, source));
+                    gameObjects.Add(new Tiles.Box2(textureAtlas, destinationRectange, source));
                 }
                 else if (item.Value == 102)
                 {
-                    gameObjects.Add(new Goal(textureAtlas, destinationRectange, source));
+                    gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
                 }
                 else if (item.Value == 24)
                 {
-                    Door doorOrange = new Door(textureAtlas, destinationRectange, source, collision, "orange");
+                    Tiles.Door doorOrange = new Tiles.Door(textureAtlas, destinationRectange, source, "orange");
                     gameObjects.Add(doorOrange);
-                    Button.doors.Add(doorOrange);
+                    Tiles.Button.doors.Add(doorOrange);
                 }
                 else if (item.Value == 25)
                 {
-                    gameObjects.Add(new Button(textureAtlas, destinationRectange, source, "orange"));
+                    gameObjects.Add(new Tiles.Button(textureAtlas, destinationRectange, source, "orange"));
+                    gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
+
+                }
+                else if (item.Value == 86)
+                {
+                    gameObjects.Add(new Tiles.Ice(textureAtlas, destinationRectange, source));
+                }
+                else if (item.Value == 89)
+                {
+                    gameObjects.Add(new Tiles.Floor(textureAtlas, destinationRectange, source));
+
+                }
+                else if (item.Value == 65)
+                {
+                    gameObjects.Add(new Player(textureAtlas, destinationRectange, source));
                 }
                 else
                 {
-                    gameObjects.Add(new Wall(textureAtlas, destinationRectange, source, collision));
+                    gameObjects.Add(new Tiles.Wall(textureAtlas, destinationRectange, source));
                 }
             }
         }
@@ -457,11 +471,11 @@ namespace BlockPusher
         /// </summary>
         private void CheckWin()
         {
-            int goalCount = gameObjects.Count(x => x is Goal);
+            int goalCount = gameObjects.Count(x => x is Tiles.Goal);
             int activeGoals = 0;
             foreach (GameObject gameObject in gameObjects)
             {
-                if (gameObject is Goal && gameObject.goalPressed)
+                if (gameObject is Tiles.Goal && gameObject.goalPressed)
                 {
                     activeGoals++;
                 }

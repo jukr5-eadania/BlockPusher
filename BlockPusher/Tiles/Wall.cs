@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace BlockPusher
+namespace BlockPusher.Tiles
 {
     internal class Wall : GameObject
     {
@@ -14,12 +14,11 @@ namespace BlockPusher
         {
             get => destinationRectangle;
         }
-        public Wall(Texture2D textureAtlas, Rectangle destinationRectange, Rectangle source, bool collision)
+        public Wall(Texture2D textureAtlas, Rectangle destinationRectange, Rectangle source)
         {
             this.textureAtlas = textureAtlas;
-            this.destinationRectangle = destinationRectange;
+            destinationRectangle = destinationRectange;
             this.source = source;
-            this.collisionOn = collision;
 
         }
         public override void Draw(SpriteBatch spriteBatch)

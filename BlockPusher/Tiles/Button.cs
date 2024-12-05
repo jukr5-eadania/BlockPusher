@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 
-namespace BlockPusher
+namespace BlockPusher.Tiles
 {
     /// <summary>
     /// Button Class that is charge of opening and closing doors based on collision

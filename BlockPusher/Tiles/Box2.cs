@@ -4,13 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Windows.Forms;
 
-namespace BlockPusher
+namespace BlockPusher.Tiles
 {
     internal class Box2 : GameObject
     {
         Rectangle destinationRectangle;
         Rectangle source;
         public string moveDirection;
+        bool sliding;
+        bool moving;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
@@ -32,13 +34,39 @@ namespace BlockPusher
 
         public override void Update(GameTime gameTime)
         {
-
+            if (sliding && moving)
+            {
+                switch (moveDirection)
+                {
+                    case "right":
+                        {
+                            destinationRectangle.Location += new Point(-128, 0);
+                            break;
+                        }
+                    case "left":
+                        {
+                            destinationRectangle.Location += new Point(128, 0);
+                            break;
+                        }
+                    case "up":
+                        {
+                            destinationRectangle.Location += new Point(0, 128);
+                            break;
+                        }
+                    case "down":
+                        {
+                            destinationRectangle.Location += new Point(0, -128);
+                            break;
+                        }
+                }
+            }
         }
 
         public override void OnCollision(GameObject other)
         {
             if (other is Player)
             {
+                moving = true;
                 moveDirection = CheckPlayerPosition(other.position, destinationRectangle.Location);
                 switch (moveDirection)
                 {
@@ -64,8 +92,10 @@ namespace BlockPusher
                         }
                 }
             }
-            else if (other is Wall || other is Box2 || other is Door)
+            else if (other is Wall || other is Box2 || (other is Door && other.collisionOn))
             {
+                sliding = false;
+                moving = false;
                 switch (moveDirection)
                 {
                     case "right":
@@ -89,6 +119,14 @@ namespace BlockPusher
                             break;
                         }
                 }
+            }
+            else if (other is Floor)
+            {
+                sliding = false;
+            }
+            else if (other is Ice)
+            {
+                sliding = true;
             }
         }
 

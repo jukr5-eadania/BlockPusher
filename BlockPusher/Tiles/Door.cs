@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
-namespace BlockPusher
+namespace BlockPusher.Tiles
 {
     /// <summary>
     /// Door class in charge of opening or closing doors
@@ -34,12 +34,11 @@ namespace BlockPusher
         /// <param name="destinationRectangle">The location of the object</param>
         /// <param name="source">The specific sprite from the spritesheet</param>
         /// <param name="color">The color of the door, Used to figure out which button to interact with</param>
-        public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, bool collision, string color)
+        public Door(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source, string color)
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
-            this.collisionOn = collision;
             this.color = color;
         }
 
