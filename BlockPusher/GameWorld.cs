@@ -537,16 +537,16 @@ namespace BlockPusher
                 {
                     gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
                 }
-                else if (item.Value == 24)
+                else if (item.Value == 50)
                 {
-                    Tiles.Door doorOrange = new Tiles.Door(textureAtlas, destinationRectange, source, "orange");
-                    gameObjects.Add(doorOrange);
+                    Tiles.Door doorBlue = new Tiles.Door(textureAtlas, destinationRectange, source, "blue");
+                    gameObjects.Add(doorBlue);
                 }
-                else if (item.Value == 25)
+                else if (item.Value == 51)
                 {
-                    Tiles.Button buttonOrange = new Tiles.Button(textureAtlas, destinationRectange, source, "orange");
-                    gameObjects.Add(buttonOrange);
-                    Tiles.Door.buttons.Add(buttonOrange);
+                    Tiles.Button buttonBlue = new Tiles.Button(textureAtlas, destinationRectange, source, "blue");
+                    gameObjects.Add(buttonBlue);
+                    Tiles.Door.buttons.Add(buttonBlue);
                 }
                 else if (item.Value == 89)
                 {

@@ -16,7 +16,7 @@ namespace BlockPusher.Tiles
         private bool active;
         int pixelTileSize = 128;
         int numTilesPerRow = 13;
-        int value = 24;
+        int value = 50;
         
         public override Rectangle collisionBox
         {
@@ -92,7 +92,7 @@ namespace BlockPusher.Tiles
             }
             else
             {
-                value = 24;
+                value = 50;
                 int x = value % numTilesPerRow;
                 int y = value / numTilesPerRow;
                 source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
