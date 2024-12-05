@@ -64,7 +64,7 @@ namespace BlockPusher
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            gameObjects.Add(new Player());
+            //gameObjects.Add(new Player());
             base.Initialize();
         }
 
@@ -454,6 +454,10 @@ namespace BlockPusher
                 {
                     gameObjects.Add(new Tiles.Floor(textureAtlas, destinationRectange, source));
 
+                }
+                else if (item.Value == 65)
+                {
+                    gameObjects.Add(new Player(textureAtlas, destinationRectange, source));
                 }
                 else
                 {

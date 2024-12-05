@@ -4,32 +4,16 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SharpDX.Direct3D9;
 using System;
+using System.Collections.Generic;
 
 namespace BlockPusher
 {
-    /// <summary>
-    /// The images for the players animations
-    /// taken from the TileSheet
-    /// </summary>
     enum PlayerSprite
     {
-        // front facing the camera
-        WalkFront_0 = 65,
-        WalkFront_1 = 66,
-        WalkFront_2 = 67,
-        // back facing the camera
-        WalkBack_0 = 68,
-        WalkBack_1 = 69,
-        WalkBack_2 = 70,
-        // looks towords right
-        WalkRight_0 = 91,
-        WalkRight_1 = 92,
-        WalkRight_2 = 93,
-        // looks towords left
-        WalkLeft_0 = 94,
-        WalkLeft_1 = 95,
-        WalkLeft_2 = 96,
-
+        Front = 65,
+        Back = 68,
+        Right = 91,
+        Left = 94
     }
 
     /// <summary>
@@ -38,31 +22,34 @@ namespace BlockPusher
     internal class Player : GameObject
     {
         // Field //
-        private Rectangle sourceRectangle;
-        private Texture2D tilesheet;
         private int spriteSize = 128;
-        private int tilesheetWidth = 13; // the width of our tilesheet (counted by images)
-        private int index = (int)PlayerSprite.WalkFront_0; // default sprite
-        private int spriteX; // the X cordinate for the sprite upper left corner when drawing it
-        private int spriteY; // the Y cordinate for the sprite upper left corner when drawing it
+        private int texAtlasWidth = 13; // the width of our tilesheet (counted by images)
+        
+        private float inputDelay = 0.2f;
+        private float timeSinceLastInput = 0f;
+        private string moveDirection;
+
+        private int pixelTileSize = 128;
+        int numTilesPerRow = 13;
+        int value;
+
+
+        // Properties //
+        Rectangle destinationRectangle;
+        Rectangle source;
+
 
         // Properties //
         public override Rectangle collisionBox
         {
-            get
-            {
-                return new Rectangle((int)position.X, (int)position.Y, spriteSize, spriteSize);
-            }
-        }
-        // Methods //
+            get => destinationRectangle;
 
-        /// <summary>
-        /// Constuctor used to set player stats
-        /// </summary>
-        public Player()
+        }
+        public Player(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source)
         {
-            position = new Vector2(640, 640);
-            speed = 300;
+            this.textureAtlas = textureAtlas;
+            this.destinationRectangle = destinationRectangle;
+            this.source = source;
         }
 
         /// <summary>
@@ -71,7 +58,7 @@ namespace BlockPusher
         /// <param name="content"></param>
         public override void LoadContent(ContentManager content)
         {
-            tilesheet = content.Load<Texture2D>("tilesheet");
+
         }
 
         /// <summary>
@@ -80,27 +67,15 @@ namespace BlockPusher
         /// <param name="gameTime"></param>
         public override void Update(GameTime gameTime)
         {
+            timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
             HandleInput();
-            Move(gameTime);
-            
+
         }
 
-        /// <summary>
-        /// Draws the sprite so it is visual in the game
-        /// </summary>
-        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
-            //spriteSize = 128;
-            index = (int)PlayerSprite.WalkFront_0; // default sprite
-            spriteX = index % tilesheetWidth;
-            spriteY = index / tilesheetWidth;
-            // create a sourceRectangle 
-            sourceRectangle = new Rectangle(spriteX*spriteSize,spriteY*spriteSize, spriteSize, spriteSize);
-
-            // only draw the area within the sourceRectangle
-            spriteBatch.Draw(tilesheet, position, sourceRectangle, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
-            base.Draw(spriteBatch);
+            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            
         }
 
         /// <summary>
@@ -108,78 +83,116 @@ namespace BlockPusher
         /// </summary>
         public void HandleInput()
         {
-            // reset velocity to make sure we will stop moving, when no key is pressed
-            velocity = Vector2.Zero;
+            if (timeSinceLastInput < inputDelay)
+            {
+                return;
+            }
 
             // get the current keyboard state
             KeyboardState keyState = Keyboard.GetState();
-
-            // Press W : Up
+            
             if (keyState.IsKeyDown(Keys.W))
             {
-                velocity += new Vector2(0, -1);
-            }
-
-            // Press S : Down
-            if (keyState.IsKeyDown(Keys.S))
-            {
-                velocity += new Vector2(0, 1);
-            }
-
-            // Press A : Right
-            if (keyState.IsKeyDown(Keys.A))
-            {
-                velocity += new Vector2(-1, 0);
+                destinationRectangle.Location += new Point(0, -128);
+                timeSinceLastInput = 0f;
+                moveDirection = "up";
+                Animation("up");
+                
             }
             
-            // Press D : Left
+            if (keyState.IsKeyDown(Keys.S))
+            {
+                destinationRectangle.Location += new Point(0, 128);
+                timeSinceLastInput = 0f;
+                moveDirection = "down";
+                Animation("down");
+            }
+            
             if (keyState.IsKeyDown(Keys.D))
             {
-                velocity += new Vector2(1, 0);
+                destinationRectangle.Location += new Point(128, 0);
+                timeSinceLastInput = 0f;
+                moveDirection = "right";
+                Animation("right");
             }
-
-            // To avoid moving faster when pressing more then one key,
-            // the vectore needs to be normalized
-            if (velocity != Vector2.Zero)
+            
+            if (keyState.IsKeyDown(Keys.A))
             {
-                velocity.Normalize();
-            }
-
-            // When pressing R the Level resets
-            if (keyState.IsKeyDown(Keys.R))
-            {
-                ResetLevel();
+                destinationRectangle.Location += new Point(-128, 0);
+                timeSinceLastInput = 0f;
+                moveDirection = "left";
+                Animation("left");
             }
 
         }
-
+        
 
         public override void OnCollision(GameObject other)
         {
-            
-        }
 
-        /// <summary>
-        /// When close to a box you can press space to push it
-        /// </summary>
-        public void Push()
-        {
-            // get the current keyboard state
-            KeyboardState keyState = Keyboard.GetState();
-
-            if (keyState.IsKeyDown(Keys.Space))
+            if (other is Wall)
             {
-                // push the box... somehow
-                
+                switch (moveDirection)
+                {
+                    case "right":
+                        {
+                            destinationRectangle.Location += new Point(-128, 0);
+                            break;
+                        }
+                    case "left":
+                        {
+                            destinationRectangle.Location += new Point(128, 0);
+                            break;
+                        }
+                    case "up":
+                        {
+                            destinationRectangle.Location += new Point(0, 128);
+                            break;
+                        }
+                    case "down":
+                        {
+                            destinationRectangle.Location += new Point(0, -128);
+                            break;
+                        }
+                }
             }
         }
 
-        /// <summary>
-        /// Makes it possible to rested the level
-        /// </summary>
-        public void ResetLevel()
+        public void Animation(string direction)
         {
-           
+            
+            switch (direction)
+            {
+                case "up":
+                    {
+                        value = (int)PlayerSprite.Back;
+                        break;
+                    }
+                case "down":
+                    {
+                        value = (int)PlayerSprite.Front;
+                        break;
+                    }
+                case "left":
+                    {
+                        value = (int)PlayerSprite.Left;
+                        break;
+                    }
+                case "right":
+                    {
+                        value = (int)PlayerSprite.Right;
+                        break;
+                    }
+                case null:
+                    {
+                        
+                        break;
+                    }
+            }
+            
+            int x = value % numTilesPerRow;
+            int y = value / numTilesPerRow;
+            source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
         }
 
     }
