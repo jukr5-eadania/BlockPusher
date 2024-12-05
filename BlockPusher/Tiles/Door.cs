@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace BlockPusher.Tiles
 {
@@ -15,6 +16,7 @@ namespace BlockPusher.Tiles
         Rectangle destinationRectangle;
         Rectangle source;
         private string color;
+        public static List<Button> buttons = new();
         private bool active;
         int pixelTileSize = 128;
         int numTilesPerRow = 13;
@@ -69,10 +71,28 @@ namespace BlockPusher.Tiles
         }
 
         /// <summary>
+        /// Checks to see if the button related to the door is active
+        /// </summary>
+        public void CheckButton()
+        {
+            active = false;
+
+            foreach (Button button in buttons)
+            {
+                if (button.Color == color && button.Active)
+                {
+                    active = true;
+                }
+            }
+        }
+
+        /// <summary>
         /// Is in charge of controlling if the door is open or closed 
         /// </summary>
         public void DoorState()
         {
+            CheckButton();
+
             if (active == true)
             {
                 value = 12;

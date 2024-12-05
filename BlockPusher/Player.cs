@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using BlockPusher.Tiles;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -130,7 +131,7 @@ namespace BlockPusher
         public override void OnCollision(GameObject other)
         {
 
-            if (other is Tiles.Wall || other is Tiles.Door)
+            if (other is Tiles.Wall || (other is Tiles.Door && other.collisionOn))
             {
                 switch (moveDirection)
                 {

@@ -15,12 +15,14 @@ namespace BlockPusher.Tiles
     {
         Rectangle destinationRectangle;
         Rectangle source;
-        public static List<Door> doors = new();
         private string color;
+        private bool active;
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
         }
+        public string Color { get => color; set => color = value; }
+        public bool Active { get => active; set => active = value; }
 
         /// <summary>
         /// Constructor used to set the stats of the button
@@ -34,17 +36,17 @@ namespace BlockPusher.Tiles
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
-            this.color = color;
+            this.Color = color;
         }
 
         public override void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
+            spriteBatch.Draw(textureAtlas, destinationRectangle, source, Microsoft.Xna.Framework.Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
         }
 
         public override void LoadContent(ContentManager content)
         {
-            
+
         }
 
         /// <summary>
@@ -53,7 +55,7 @@ namespace BlockPusher.Tiles
         /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
-            
+
         }
 
         /// <summary>
@@ -64,13 +66,7 @@ namespace BlockPusher.Tiles
         {
             if (other is Player || other is Box2)
             {
-                foreach (Door door in doors)
-                {
-                    if (door.Color == color)
-                    {
-                        door.Active = true;
-                    }
-                }
+                active = true;
             }
         }
 
@@ -82,13 +78,7 @@ namespace BlockPusher.Tiles
         {
             if (other is Player || other is Box2)
             {
-                foreach (Door door in doors)
-                {
-                    if (door.Color == color)
-                    {
-                        door.Active = false;
-                    }
-                }
+                active = false;
             }
         }
     }

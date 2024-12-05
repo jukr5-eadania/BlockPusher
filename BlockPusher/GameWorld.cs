@@ -313,6 +313,7 @@ namespace BlockPusher
 
                 case 4:
                     gameObjects.Clear();
+                    Tiles.Door.buttons.Clear();
                     LoadLevel(4);
                     translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
@@ -518,12 +519,12 @@ namespace BlockPusher
                 {
                     Tiles.Door doorOrange = new Tiles.Door(textureAtlas, destinationRectange, source, "orange");
                     gameObjects.Add(doorOrange);
-                    Tiles.Button.doors.Add(doorOrange);
                 }
                 else if (item.Value == 25)
                 {
-                    gameObjects.Add(new Tiles.Button(textureAtlas, destinationRectange, source, "orange"));
-
+                    Tiles.Button buttonOrange = new Tiles.Button(textureAtlas, destinationRectange, source, "orange");
+                    gameObjects.Add(buttonOrange);
+                    Tiles.Door.buttons.Add(buttonOrange);
                 }
                 else if (item.Value == 86)
                 {
