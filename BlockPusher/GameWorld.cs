@@ -8,12 +8,38 @@ using System.Linq;
 
 namespace BlockPusher
 {
+    /// <summary>
+    /// Enum used to decide what state the game is in
+    /// </summary>
+    public enum GameState
+    {
+        MainMenu,
+        LevelSelect,
+        Playing
+    }
+
+    /// <summary>
+    /// "GameWorld" is the main class. It is here we "create" the game by initializing objects and loading in the content we need to 
+    /// make the visual of the game. It is in charge of the main game loop.
+    /// Made by: Julius, Emilie, Mads
+    /// </summary>
     public class GameWorld : Game
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private List<GameObject> gameObjects = new List<GameObject>();
         private Texture2D collisionTexture;
+
+        private SpriteFont menuFont;
+        private GameState _gameState = GameState.MainMenu;
+        private int selectedMainMenuItem = 0;
+        private string[] mainMenuItems = { "Start Game", "Exit" };
+
+        private int selectedLevelMenuItem = 0;
+        private string[] levelMenuItems = { "level 1", "level 2", "level 3", "level 4", "level 5", "level 6", "level 7", "level 8", "level 9", "level 10", "Go Back" };
+
+        private float inputDelay = 0.2f;
+        private float timeSinceLastInput = 0f;
 
         private Dictionary<Vector3, int> tiles;
         private Dictionary<Vector3, int> objects;
@@ -51,28 +77,40 @@ namespace BlockPusher
                 gameObject.LoadContent(Content);
             }
 
+            menuFont = Content.Load<SpriteFont>("MenuFont");
 
             textureAtlas = Content.Load<Texture2D>("tilesheet");
-            tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
-            objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
-            AddTiles(tiles);
-            AddTiles(objects);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) && _gameState == GameState.Playing)
+                SetGameState(GameState.MainMenu);
 
-            foreach (GameObject gameObject in gameObjects)
+            timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
+
+            switch (_gameState)
             {
-                gameObject.Update(gameTime);
-                foreach (GameObject other in gameObjects)
-                {
-                    gameObject.CheckCollision(other);
-                }
+                case GameState.MainMenu:
+                    UpdateMainMenu();
+                    break;
+
+                case GameState.LevelSelect:
+                    UpdateLevelMenu();
+                    break;
+
+                case GameState.Playing:
+                    foreach (GameObject gameObject in gameObjects)
+                    {
+                        gameObject.Update(gameTime);
+                        foreach (GameObject other in gameObjects)
+                        {
+                            gameObject.CheckCollision(other);
+                        }
+                    }
+                    CheckWin();
+                    break;
             }
-            CheckWin();
         }
 
         protected override void Draw(GameTime gameTime)
@@ -81,16 +119,247 @@ namespace BlockPusher
 
             _spriteBatch.Begin(SpriteSortMode.BackToFront);
 
-            foreach (GameObject gameObject in gameObjects)
+            switch (_gameState)
             {
-                gameObject.Draw(_spriteBatch);
-                DrawCollisionBox(gameObject);
+                case GameState.MainMenu:
+                    DrawMainMenu();
+                    break;
+
+                case GameState.LevelSelect:
+                    DrawLevelMenu();
+                    break;
+
+                case GameState.Playing:
+                    foreach (GameObject gameObject in gameObjects)
+                    {
+                        gameObject.Draw(_spriteBatch);
+                        DrawCollisionBox(gameObject);
+                    }
+                    break;
             }
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
         }
+
+        /// <summary>
+        /// Sets the gamestate based with enums based on input with parameter
+        /// -Julius
+        /// </summary>
+        /// <param name="gameState">The gamestate as enum</param>
+        public void SetGameState(GameState gameState)
+        {
+            if (gameState != _gameState)
+            {
+                _gameState = gameState;
+            }
+        }
+
+        /// <summary>
+        /// Controls the main menu based on player input
+        /// -Julius
+        /// </summary>
+        private void UpdateMainMenu()
+        {
+            if (timeSinceLastInput < inputDelay)
+            {
+                return;
+            }
+
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                selectedMainMenuItem--;
+                if (selectedMainMenuItem < 0)
+                {
+                    selectedMainMenuItem = 0;
+                }
+                timeSinceLastInput = 0f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.S))
+            {
+                selectedMainMenuItem++;
+                if (selectedMainMenuItem >= mainMenuItems.Length)
+                {
+                    selectedMainMenuItem = mainMenuItems.Length - 1;
+                }
+                timeSinceLastInput = 0f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                SelectMainMenuItem();
+                timeSinceLastInput = 0f;
+            }
+        }
+
+        /// <summary>
+        /// Draws the main menu for the player to see
+        /// -Julius
+        /// </summary>
+        private void DrawMainMenu()
+        {
+            for (int i = 0; i < mainMenuItems.Length; i++)
+            {
+                Color itemColor = i == selectedMainMenuItem ? Color.HotPink : Color.White;
+                _spriteBatch.DrawString(menuFont, mainMenuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(mainMenuItems[i]).X / 2, 150 + i * 40), itemColor);
+            }
+        }
+
+        /// <summary>
+        /// Decides what each option in the main menu does based on player selection
+        /// -Julius
+        /// </summary>
+        private void SelectMainMenuItem()
+        {
+            switch (selectedMainMenuItem)
+            {
+                case 0: // Start Game
+                    SetGameState(GameState.LevelSelect);
+                    break;
+
+                case 1: // Exit
+                    Exit();
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Controls the level select menu based on player input
+        /// -Julius
+        /// </summary>
+        private void UpdateLevelMenu()
+        {
+            if (timeSinceLastInput < inputDelay)
+            {
+                return;
+            }
+
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.W))
+            {
+                selectedLevelMenuItem--;
+                if (selectedLevelMenuItem < 0)
+                {
+                    selectedLevelMenuItem = 0;
+                }
+                timeSinceLastInput = 0f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.S))
+            {
+                selectedLevelMenuItem++;
+                if (selectedLevelMenuItem >= levelMenuItems.Length)
+                {
+                    selectedLevelMenuItem = levelMenuItems.Length - 1;
+                }
+                timeSinceLastInput = 0f;
+            }
+            else if (keyboardState.IsKeyDown(Keys.Enter))
+            {
+                SelectLevelMenuItem();
+                timeSinceLastInput = 0f;
+            }
+        }
+
+        /// <summary>
+        /// Draws the level select menu for the player to see
+        /// -Julius
+        /// </summary>
+        private void DrawLevelMenu()
+        {
+            for (int i = 0; i < levelMenuItems.Length; i++)
+            {
+                Color itemColor = i == selectedLevelMenuItem ? Color.HotPink : Color.White;
+                _spriteBatch.DrawString(menuFont, levelMenuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(levelMenuItems[i]).X / 2, 150 + i * 40), itemColor);
+            }
+        }
+
+        /// <summary>
+        /// Decides what each option in the level select menu does based on player selection
+        /// -Julius
+        /// </summary>
+        private void SelectLevelMenuItem()
+        {
+            switch (selectedLevelMenuItem)
+            {
+                case 0:
+                    gameObjects.Clear();
+                    LoadLevel(0);
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 1:
+                    gameObjects.Clear();
+                    LoadLevel(1);
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 2: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 3: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 4:
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 5:
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 6: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 7: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 8: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 9: 
+                    SetGameState(GameState.Playing);
+                    break;
+
+                case 10: 
+                    SetGameState(GameState.MainMenu);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Loads levels based on what level the player selected in the level selection menu
+        /// -Julius
+        /// </summary>
+        /// <param name="lvl">Used to specify what level need to be loaded</param>
+        public void LoadLevel(int lvl)
+        {
+            switch (lvl)
+            {
+                case 0:
+                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 1:
+                    tiles = LoadMap("../../../Content/MapData/Level1_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level1_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+            }
+            
+        }
+
         private void DrawCollisionBox(GameObject go)
         {
 
@@ -136,6 +405,7 @@ namespace BlockPusher
             }
             return result;
         }
+
         /// <summary>
         /// Adds tiles to list of gameobjects
         /// </summary>
@@ -145,16 +415,16 @@ namespace BlockPusher
             foreach (var item in ground)
             {
                 // Adjust to scale level size
-                int displayTilesize = 128;
+                int displayTileSize = 128;
                 int numTilesPerRow = 13;
-                int pixelTilesize = 128;
+                int pixelTileSize = 128;
 
-                Rectangle destinationRectange = new((int)item.Key.X * displayTilesize, (int)item.Key.Y * displayTilesize, displayTilesize, displayTilesize);
+                Rectangle destinationRectange = new((int)item.Key.X * displayTileSize, (int)item.Key.Y * displayTileSize, displayTileSize, displayTileSize);
 
                 int x = item.Value % numTilesPerRow;
                 int y = item.Value / numTilesPerRow;
 
-                Rectangle source = new(x * pixelTilesize, y * pixelTilesize, pixelTilesize, pixelTilesize);
+                Rectangle source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);
 
                 if (item.Value == 3)
                 {
@@ -162,6 +432,17 @@ namespace BlockPusher
                 }
                 else if (item.Value == 102)
                 {
+                    gameObjects.Add(new Goal(textureAtlas, destinationRectange, source));
+                }
+                else if (item.Value == 24)
+                {
+                    Door doorOrange = new Door(textureAtlas, destinationRectange, source, collision, "orange");
+                    gameObjects.Add(doorOrange);
+                    Button.doors.Add(doorOrange);
+                }
+                else if (item.Value == 25)
+                {
+                    gameObjects.Add(new Button(textureAtlas, destinationRectange, source, "orange"));
                     gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
 
                 }
@@ -180,7 +461,10 @@ namespace BlockPusher
                 }
             }
         }
-        // Checks if all goals have a box on them, runs win logic if they do
+
+        /// <summary>
+        /// Checks if all goals have a box on them, runs win logic if they do
+        /// </summary>
         private void CheckWin()
         {
             int goalCount = gameObjects.Count(x => x is Tiles.Goal);
@@ -194,8 +478,7 @@ namespace BlockPusher
             }
             if (activeGoals >= goalCount)
             {
-                // Win logic here
-                Exit();
+                SetGameState(GameState.LevelSelect);
             }
         }
     }
