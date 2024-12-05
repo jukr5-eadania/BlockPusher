@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using SharpDX.Direct3D9;
-using System;
-using System.Collections.Generic;
 
 namespace BlockPusher
 {
@@ -21,23 +17,13 @@ namespace BlockPusher
     /// </summary>
     public class Player : GameObject
     {
-        // Field //
-        private int spriteSize = 128;
-        private int texAtlasWidth = 13; // the width of our tilesheet (counted by images)
-        
+        // Field //        
         private float inputDelay = 0.2f;
         private float timeSinceLastInput = 0f;
-        
 
         private int pixelTileSize = 128;
         int numTilesPerRow = 13;
         int value;
-
-
-        // Properties //
-        Rectangle destinationRectangle;
-        Rectangle source;
-
 
         // Properties //
         public override Rectangle collisionBox
@@ -45,20 +31,12 @@ namespace BlockPusher
             get => destinationRectangle;
 
         }
+
         public Player(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source)
         {
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
-        }
-
-        /// <summary>
-        /// Loads the sprites / the spritesheet
-        /// </summary>
-        /// <param name="content"></param>
-        public override void LoadContent(ContentManager content)
-        {
-
         }
 
         /// <summary>
@@ -75,7 +53,7 @@ namespace BlockPusher
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);
-            
+
         }
 
         /// <summary>
@@ -90,16 +68,16 @@ namespace BlockPusher
 
             // get the current keyboard state
             KeyboardState keyState = Keyboard.GetState();
-            
+
             if (keyState.IsKeyDown(Keys.W))
             {
                 destinationRectangle.Location += new Point(0, -128);
                 timeSinceLastInput = 0f;
                 moveDirection = "up";
                 Animation("up");
-                
+
             }
-            
+
             if (keyState.IsKeyDown(Keys.S))
             {
                 destinationRectangle.Location += new Point(0, 128);
@@ -107,7 +85,7 @@ namespace BlockPusher
                 moveDirection = "down";
                 Animation("down");
             }
-            
+
             if (keyState.IsKeyDown(Keys.D))
             {
                 destinationRectangle.Location += new Point(128, 0);
@@ -115,7 +93,7 @@ namespace BlockPusher
                 moveDirection = "right";
                 Animation("right");
             }
-            
+
             if (keyState.IsKeyDown(Keys.A))
             {
                 destinationRectangle.Location += new Point(-128, 0);
@@ -125,12 +103,12 @@ namespace BlockPusher
             }
 
         }
-        
+
 
         public override void OnCollision(GameObject other)
         {
 
-            if (other is Tiles.Wall)
+            if (other is Tiles.Wall || (other is Tiles.Door && other.collisionOn))
             {
                 switch (moveDirection)
                 {
@@ -159,37 +137,33 @@ namespace BlockPusher
         }
         public void BoxCollision()
         {
-
-           
-            
-                switch (moveDirection)
-                {
-                    case "right":
-                        {
-                            destinationRectangle.Location += new Point(-128, 0);
-                            break;
-                        }
-                    case "left":
-                        {
-                            destinationRectangle.Location += new Point(128, 0);
-                            break;
-                        }
-                    case "up":
-                        {
-                            destinationRectangle.Location += new Point(0, 128);
-                            break;
-                        }
-                    case "down":
-                        {
-                            destinationRectangle.Location += new Point(0, -128);
-                            break;
-                        }
-                }
+            switch (moveDirection)
+            {
+                case "right":
+                    {
+                        destinationRectangle.Location += new Point(-128, 0);
+                        break;
+                    }
+                case "left":
+                    {
+                        destinationRectangle.Location += new Point(128, 0);
+                        break;
+                    }
+                case "up":
+                    {
+                        destinationRectangle.Location += new Point(0, 128);
+                        break;
+                    }
+                case "down":
+                    {
+                        destinationRectangle.Location += new Point(0, -128);
+                        break;
+                    }
+            }
         }
 
         public void Animation(string direction)
         {
-            
             switch (direction)
             {
                 case "up":
@@ -212,13 +186,8 @@ namespace BlockPusher
                         value = (int)PlayerSprite.Right;
                         break;
                     }
-                case null:
-                    {
-                        
-                        break;
-                    }
             }
-            
+
             int x = value % numTilesPerRow;
             int y = value / numTilesPerRow;
             source = new(x * pixelTileSize, y * pixelTileSize, pixelTileSize, pixelTileSize);

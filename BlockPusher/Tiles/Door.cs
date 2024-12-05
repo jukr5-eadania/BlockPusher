@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using System.Collections.Generic;
 
 namespace BlockPusher.Tiles
 {
@@ -12,9 +11,8 @@ namespace BlockPusher.Tiles
     /// </summary>
     internal class Door : GameObject
     {
-        Rectangle destinationRectangle;
-        Rectangle source;
         private string color;
+        public static List<Button> buttons = new();
         private bool active;
         int pixelTileSize = 128;
         int numTilesPerRow = 13;
@@ -24,8 +22,6 @@ namespace BlockPusher.Tiles
         {
             get => destinationRectangle;
         }
-        public string Color { get => color; set => color = value; }
-        public bool Active { get => active; set => active = value; }
 
         /// <summary>
         /// Constructor used to set the stats of the soor
@@ -54,19 +50,29 @@ namespace BlockPusher.Tiles
             }
         }
 
-        public override void LoadContent(ContentManager content)
-        {
-
-        }
-
         /// <summary>
         /// The main loop of the door
         /// </summary>
         /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public override void Update(GameTime gameTime)
         {
-            
             DoorState();
+        }
+
+        /// <summary>
+        /// Checks to see if the button related to the door is active
+        /// </summary>
+        public void CheckButton()
+        {
+            active = false;
+
+            foreach (Button button in buttons)
+            {
+                if (button.Color == color && button.Active)
+                {
+                    active = true;
+                }
+            }
         }
 
         /// <summary>
@@ -74,6 +80,8 @@ namespace BlockPusher.Tiles
         /// </summary>
         public void DoorState()
         {
+            CheckButton();
+
             if (active == true)
             {
                 value = 12;

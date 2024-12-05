@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -44,10 +43,14 @@ namespace BlockPusher
         private Dictionary<Vector3, int> tiles;
         private Dictionary<Vector3, int> objects;
         private Texture2D textureAtlas;
+        private Matrix translation;
 
         public static int Height { get; set; }
         public static int Width { get; set; }
 
+        /// <summary>
+        /// "GameWorld()" is the window the game runs in.
+        /// </summary>
         public GameWorld()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -58,34 +61,42 @@ namespace BlockPusher
             _graphics.PreferredBackBufferWidth = 1920;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            translation = Matrix.CreateScale(1f);
         }
 
+        /// <summary>
+        /// "Initialize" creates the objects
+        /// </summary>
         protected override void Initialize()
         {
             GameWorld.Height = _graphics.PreferredBackBufferHeight;
             GameWorld.Width = _graphics.PreferredBackBufferWidth;
-            //gameObjects.Add(new Player());
             base.Initialize();
         }
 
+        /// <summary>
+        /// Loads our game content in order to give the objects sprites
+        /// </summary>
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             collisionTexture = Content.Load<Texture2D>("pixel");
-            foreach (GameObject gameObject in gameObjects)
-            {
-                gameObject.LoadContent(Content);
-            }
-
             menuFont = Content.Load<SpriteFont>("MenuFont");
-
             textureAtlas = Content.Load<Texture2D>("tilesheet");
         }
 
+        /// <summary>
+        /// The main loop of the game
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) && _gameState == GameState.Playing)
+            {
                 SetGameState(GameState.MainMenu);
+                translation = Matrix.CreateScale(1f);
+            }
+
 
             timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -113,11 +124,15 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// "Draw" is called regulary to take the current game stat and draw what we want on the screen
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _spriteBatch.Begin(SpriteSortMode.BackToFront);
+            _spriteBatch.Begin(SpriteSortMode.BackToFront, transformMatrix: translation);
 
             switch (_gameState)
             {
@@ -133,7 +148,9 @@ namespace BlockPusher
                     foreach (GameObject gameObject in gameObjects)
                     {
                         gameObject.Draw(_spriteBatch);
+#if DEBUG
                         DrawCollisionBox(gameObject);
+#endif
                     }
                     break;
             }
@@ -287,44 +304,71 @@ namespace BlockPusher
                 case 0:
                     gameObjects.Clear();
                     LoadLevel(0);
+                    translation = Matrix.CreateScale(0.75f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 1:
                     gameObjects.Clear();
                     LoadLevel(1);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 2: 
+                case 2:
+                    gameObjects.Clear();
+                    LoadLevel(2);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 3: 
+                case 3:
+                    gameObjects.Clear();
+                    LoadLevel(3);
+                    translation = Matrix.CreateScale(0.7f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 4:
+                    gameObjects.Clear();
+                    Tiles.Door.buttons.Clear();
+                    LoadLevel(4);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 5:
+                    gameObjects.Clear();
+                    LoadLevel(5);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 6: 
+                case 6:
+                    gameObjects.Clear();
+                    LoadLevel(6);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 7: 
+                case 7:
+                    gameObjects.Clear();
+                    LoadLevel(7);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 8: 
+                case 8:
+                    gameObjects.Clear();
+                    LoadLevel(8);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
-                case 9: 
+                case 9:
+                    gameObjects.Clear();
+                    LoadLevel(9);
+                    translation = Matrix.CreateScale(1f);
                     SetGameState(GameState.Playing);
                     break;
 
@@ -344,25 +388,83 @@ namespace BlockPusher
             switch (lvl)
             {
                 case 0:
-                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
-                    AddTiles(tiles);
-                    AddTiles(objects);
-                    break;
-
-                case 1:
                     tiles = LoadMap("../../../Content/MapData/Level1_Tiles.csv", 0);
                     objects = LoadMap("../../../Content/MapData/Level1_Obj.csv", 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
+
+                case 1:
+                    tiles = LoadMap("../../../Content/MapData/Level2_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level2_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 2:
+                    tiles = LoadMap("../../../Content/MapData/Level3_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level3_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 3:
+                    tiles = LoadMap("../../../Content/MapData/Level4_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level4_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 4:
+                    tiles = LoadMap("../../../Content/MapData/Level5_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level5_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 5:
+                    tiles = LoadMap("../../../Content/MapData/Level6_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level6_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 6:
+                    tiles = LoadMap("../../../Content/MapData/Level7_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level7_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 7:
+                    tiles = LoadMap("../../../Content/MapData/Level8_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level8_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 8:
+                    tiles = LoadMap("../../../Content/MapData/Level9_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/Level9_Obj.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
+
+                case 9:
+                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
+                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
+                    AddTiles(tiles);
+                    AddTiles(objects);
+                    break;
             }
-            
         }
 
+        /// <summary>
+        /// draws the red collision box
+        /// </summary>
+        /// <param name="go">Parameter for gameobjects</param>
         private void DrawCollisionBox(GameObject go)
         {
-
             Rectangle collisionBox = go.collisionBox;
             Rectangle topLine = new Rectangle(collisionBox.X, collisionBox.Y, collisionBox.Width, 1);
             Rectangle bottomLine = new Rectangle(collisionBox.X, collisionBox.Y + collisionBox.Height, collisionBox.Width, 1);
@@ -377,6 +479,7 @@ namespace BlockPusher
 
         /// <summary>
         /// Returns every position and type of tile from given tilemap
+        /// -Mads
         /// </summary>
         /// <param name="filepath"></param>
         /// <returns></returns>
@@ -408,6 +511,7 @@ namespace BlockPusher
 
         /// <summary>
         /// Adds tiles to list of gameobjects
+        /// -Mads
         /// </summary>
         /// <param name="ground"></param>
         private void AddTiles(Dictionary<Vector3, int> ground)
@@ -438,13 +542,12 @@ namespace BlockPusher
                 {
                     Tiles.Door doorOrange = new Tiles.Door(textureAtlas, destinationRectange, source, "orange");
                     gameObjects.Add(doorOrange);
-                    Tiles.Button.doors.Add(doorOrange);
                 }
                 else if (item.Value == 25)
                 {
-                    gameObjects.Add(new Tiles.Button(textureAtlas, destinationRectange, source, "orange"));
-                    gameObjects.Add(new Tiles.Goal(textureAtlas, destinationRectange, source));
-
+                    Tiles.Button buttonOrange = new Tiles.Button(textureAtlas, destinationRectange, source, "orange");
+                    gameObjects.Add(buttonOrange);
+                    Tiles.Door.buttons.Add(buttonOrange);
                 }
                 else if (item.Value == 86)
                 {
@@ -468,6 +571,7 @@ namespace BlockPusher
 
         /// <summary>
         /// Checks if all goals have a box on them, runs win logic if they do
+        /// -Mads
         /// </summary>
         private void CheckWin()
         {
@@ -482,6 +586,7 @@ namespace BlockPusher
             }
             if (activeGoals >= goalCount)
             {
+                translation = Matrix.CreateScale(1f);
                 SetGameState(GameState.LevelSelect);
             }
         }

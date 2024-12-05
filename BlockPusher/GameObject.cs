@@ -1,19 +1,22 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
 
 namespace BlockPusher
 {
+    /// <summary>
+    /// "GameObject" is a superclass that all object will inherit from
+    /// Made by: Julius, Emilie, Mads
+    /// </summary>
     public abstract class GameObject
     {
         // Field //
-        protected Vector2 velocity;
-        protected float speed;
-        public Vector2 position;
-        public bool goalPressed = false;
         protected Texture2D textureAtlas;
+        protected Rectangle destinationRectangle;
+        protected Rectangle source;
+
+        public bool goalPressed = false;
         protected List<GameObject> collidingObjects = new();
         public bool collisionOn = true;
         public string moveDirection;
@@ -23,14 +26,17 @@ namespace BlockPusher
 
 
         // Methods //
-        public abstract void LoadContent(ContentManager content);
-
+        /// <summary>
+        /// The main loop of the object
+        /// </summary>
+        /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public abstract void Update(GameTime gameTime);
 
-        public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            //spriteBatch.Draw(null, Vector2.Zero, Color.White);
-        }
+        /// <summary>
+        /// Draws the sprites and edit its origing
+        /// </summary>
+        /// <param name="spriteBatch"></param>
+        public abstract void Draw(SpriteBatch spriteBatch);
 
 
         /// <summary>
@@ -43,10 +49,15 @@ namespace BlockPusher
             {
                 OnCollision(other);
             }
+
             if (collisionBox.Intersects(other.collisionBox) && other != this && !collidingObjects.Contains(other))
             {
                 OnCollisionEnter(other);
                 collidingObjects.Add(other);
+            }
+            else if (collisionBox.Intersects(other.collisionBox) && other != this)
+            {
+
             }
             else if (collidingObjects.Contains(other))
             {
