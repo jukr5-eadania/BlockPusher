@@ -16,7 +16,8 @@ namespace BlockPusher
     }
 
     /// <summary>
-    /// The player class controls the player 
+    /// The player class controls the player
+    /// Made by Emilie
     /// </summary>
     public class Player : GameObject
     {
