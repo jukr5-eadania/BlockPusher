@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Input;
 
 namespace BlockPusher
 {
+    /// <summary>
+    /// Enum used to deside what sprite the player uses
+    /// </summary>
     enum PlayerSprite
     {
         Front = 65,
@@ -17,7 +20,7 @@ namespace BlockPusher
     /// </summary>
     public class Player : GameObject
     {
-        // Field //        
+              
         private float inputDelay = 0.2f;
         private float timeSinceLastInput = 0f;
 
@@ -25,13 +28,18 @@ namespace BlockPusher
         int numTilesPerRow = 13;
         int value;
 
-        // Properties //
+        
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
 
         }
-
+        /// <summary>
+        /// Constructor used to set the stat for player
+        /// </summary>
+        /// <param name="textureAtlas"> the texture atlas for the player </param>
+        /// <param name="destinationRectangle"> the location of the player </param>
+        /// <param name="source"> the specified sprite from the texture atlas </param>
         public Player(Texture2D textureAtlas, Rectangle destinationRectangle, Rectangle source)
         {
             this.textureAtlas = textureAtlas;
@@ -104,7 +112,11 @@ namespace BlockPusher
 
         }
 
-
+        /// <summary>
+        ///  Tells the program what happens when player collider with 
+        /// another specified object.
+        /// </summary>
+        /// <param name="other"></param>
         public override void OnCollision(GameObject other)
         {
 
@@ -162,6 +174,11 @@ namespace BlockPusher
             }
         }
 
+        /// <summary>
+        /// Moves the source rectangle to the sprite in the texture atlas that
+        /// match the direction the player is walking/moving
+        /// </summary>
+        /// <param name="direction"> the direction of the players movement </param>
         public void Animation(string direction)
         {
             switch (direction)
