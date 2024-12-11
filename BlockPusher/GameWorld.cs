@@ -397,71 +397,71 @@ namespace BlockPusher
             switch (lvl)
             {
                 case 0:
-                    tiles = LoadMap("../../../Content/MapData/Level1_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level1_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level1_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level1_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 1:
-                    tiles = LoadMap("../../../Content/MapData/Level2_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level2_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level2_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level2_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 2:
-                    tiles = LoadMap("../../../Content/MapData/Level3_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level3_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level3_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level3_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 3:
-                    tiles = LoadMap("../../../Content/MapData/Level4_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level4_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level4_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level4_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 4:
-                    tiles = LoadMap("../../../Content/MapData/Level5_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level5_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level5_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level5_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 5:
-                    tiles = LoadMap("../../../Content/MapData/Level6_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level6_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level6_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level6_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 6:
-                    tiles = LoadMap("../../../Content/MapData/Level7_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level7_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level7_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level7_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 7:
-                    tiles = LoadMap("../../../Content/MapData/Level8_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level8_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level8_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level8_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 8:
-                    tiles = LoadMap("../../../Content/MapData/Level9_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/Level9_Obj.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level9_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level9_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
 
                 case 9:
-                    tiles = LoadMap("../../../Content/MapData/TestmapBlocks_Tiles.csv", 0);
-                    objects = LoadMap("../../../Content/MapData/TestmapBlocks_Objects.csv", 1);
+                    tiles = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level10_Tiles.csv"), 0);
+                    objects = LoadMap(Path.Combine(Content.RootDirectory, "MapData/Level10_Obj.csv"), 1);
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
@@ -469,7 +469,6 @@ namespace BlockPusher
             foreach (GameObject gameObject in gameObjects)
             {
                 gameObject.LoadContent(Content);
-
             }
         }
 
