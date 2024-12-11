@@ -219,7 +219,7 @@ namespace BlockPusher
             for (int i = 0; i < mainMenuItems.Length; i++)
             {
                 Color itemColor = i == selectedMainMenuItem ? Color.HotPink : Color.White;
-                _spriteBatch.DrawString(menuFont, mainMenuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(mainMenuItems[i]).X / 2, 150 + i * 40), itemColor);
+                _spriteBatch.DrawString(menuFont, mainMenuItems[i], new Vector2(GameWorld.Width / 2 - menuFont.MeasureString(mainMenuItems[i]).X / 2, 150 + i * 40), itemColor);
             }
         }
 
@@ -288,7 +288,7 @@ namespace BlockPusher
             for (int i = 0; i < levelMenuItems.Length; i++)
             {
                 Color itemColor = i == selectedLevelMenuItem ? Color.HotPink : Color.White;
-                _spriteBatch.DrawString(menuFont, levelMenuItems[i], new Vector2(Width / 2 - menuFont.MeasureString(levelMenuItems[i]).X / 2, 150 + i * 40), itemColor);
+                _spriteBatch.DrawString(menuFont, levelMenuItems[i], new Vector2(GameWorld.Width / 2 - menuFont.MeasureString(levelMenuItems[i]).X / 2, 150 + i * 40), itemColor);
             }
         }
 
