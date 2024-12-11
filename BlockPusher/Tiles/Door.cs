@@ -38,6 +38,10 @@ namespace BlockPusher.Tiles
             this.color = color;
         }
 
+        /// <summary>
+        /// Draws the sprites
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (active)

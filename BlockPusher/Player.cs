@@ -59,6 +59,10 @@ namespace BlockPusher
 
         }
 
+        /// <summary>
+        /// Draws the sprites
+        /// </summary>
+        /// <param name="spriteBatch"></param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(textureAtlas, destinationRectangle, source, Color.White, 0, Vector2.Zero, SpriteEffects.None, 0);

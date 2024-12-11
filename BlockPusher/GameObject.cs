@@ -33,7 +33,7 @@ namespace BlockPusher
         public abstract void Update(GameTime gameTime);
 
         /// <summary>
-        /// Draws the sprites and edit its origing
+        /// Draws the sprites
         /// </summary>
         /// <param name="spriteBatch"></param>
         public abstract void Draw(SpriteBatch spriteBatch);
