@@ -3,6 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BlockPusher.Tiles
 {
+    /// <summary>
+    /// A type of tile.
+    /// The player and boxes get stopped by walls.
+    /// - Mads
+    /// </summary>
     internal class Wall : GameObject
     {
         public override Rectangle collisionBox

@@ -3,6 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BlockPusher.Tiles
 {
+    /// <summary>
+    /// A type of tile.
+    /// The floor tile doesn't have any special functionality.
+    /// - Mads
+    /// </summary>
     internal class Floor : GameObject
     {
         public override Rectangle collisionBox

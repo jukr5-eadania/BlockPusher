@@ -3,6 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BlockPusher.Tiles
 {
+    /// <summary>
+    /// A type of tile.
+    /// When a box moves over an ice tile, it keeps moving until it hits a non ice tile.
+    /// - Mads
+    /// </summary>
     internal class Ice : GameObject
     {
         public override Rectangle collisionBox

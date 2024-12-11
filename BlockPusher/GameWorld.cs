@@ -370,14 +370,14 @@ namespace BlockPusher
                 case 8:
                     gameObjects.Clear();
                     LoadLevel(8);
-                    translation = Matrix.CreateScale(1f);
+                    translation = Matrix.CreateScale(0.8f);
                     SetGameState(GameState.Playing);
                     break;
 
                 case 9:
                     gameObjects.Clear();
                     LoadLevel(9);
-                    translation = Matrix.CreateScale(1f);
+                    translation = Matrix.CreateScale(0.6f);
                     SetGameState(GameState.Playing);
                     break;
 

@@ -3,6 +3,11 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace BlockPusher.Tiles
 {
+    /// <summary>
+    /// A type of tile.
+    /// If all goal tiles in a level have a box on it, the level is won.
+    /// - Mads
+    /// </summary>
     internal class Goal : GameObject
     {
         public override Rectangle collisionBox

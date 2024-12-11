@@ -152,6 +152,10 @@ namespace BlockPusher
                 }
             }
         }
+        /// <summary>
+        /// Moves player back when walking into a box that cannot be moved
+        /// - Mads
+        /// </summary>
         public void BoxCollision()
         {
             switch (moveDirection)
