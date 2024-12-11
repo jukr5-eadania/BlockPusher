@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace BlockPusher.Tiles
@@ -10,6 +12,8 @@ namespace BlockPusher.Tiles
         private bool sliding;
         private bool moving;
 
+        private SoundEffect soundBoxMove;
+
         public override Rectangle collisionBox
         {
             get => destinationRectangle;
@@ -20,6 +24,11 @@ namespace BlockPusher.Tiles
             this.textureAtlas = textureAtlas;
             this.destinationRectangle = destinationRectangle;
             this.source = source;
+        }
+
+        public override void LoadContent(ContentManager content)
+        {
+            soundBoxMove = content.Load<SoundEffect>("push");
         }
 
         public override void Draw(SpriteBatch spriteBatch)
@@ -68,21 +77,25 @@ namespace BlockPusher.Tiles
                 {
                     case "left":
                         {
+                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(-128, 0);
                             break;
                         }
                     case "right":
                         {
+                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(128, 0);
                             break;
                         }
                     case "down":
                         {
+                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(0, 128);
                             break;
                         }
                     case "up":
                         {
+                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(0, -128);
                             break;
                         }

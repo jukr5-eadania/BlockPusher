@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -31,6 +32,15 @@ namespace BlockPusher
         /// </summary>
         /// <param name="gameTime">Takes a GameTime that provides the timespan since last call to update</param>
         public abstract void Update(GameTime gameTime);
+
+        /// <summary>
+        /// Loads content
+        /// </summary>
+        /// <param name="content"></param>
+        public virtual void LoadContent(ContentManager content)
+        {
+
+        }
 
         /// <summary>
         /// Draws the sprites

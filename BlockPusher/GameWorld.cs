@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -45,6 +47,9 @@ namespace BlockPusher
         private Texture2D textureAtlas;
         private Matrix translation;
 
+        private Song backgroundMusic;
+        
+        
         public static int Height { get; set; }
         public static int Width { get; set; }
 
@@ -83,6 +88,10 @@ namespace BlockPusher
             collisionTexture = Content.Load<Texture2D>("pixel");
             menuFont = Content.Load<SpriteFont>("MenuFont");
             textureAtlas = Content.Load<Texture2D>("tilesheet");
+            backgroundMusic = Content.Load<Song>("BlockPusher_music");
+            MediaPlayer.Play(backgroundMusic);
+            MediaPlayer.IsRepeating = true;
+            
         }
 
         /// <summary>
@@ -98,7 +107,8 @@ namespace BlockPusher
             }
 
             timeSinceLastInput += (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            
+                        
             switch (_gameState)
             {
                 case GameState.MainMenu:
@@ -455,6 +465,11 @@ namespace BlockPusher
                     AddTiles(tiles);
                     AddTiles(objects);
                     break;
+            }
+            foreach (GameObject gameObject in gameObjects)
+            {
+                gameObject.LoadContent(Content);
+
             }
         }
 
