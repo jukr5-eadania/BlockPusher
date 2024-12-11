@@ -77,29 +77,27 @@ namespace BlockPusher.Tiles
                 {
                     case "left":
                         {
-                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(-128, 0);
                             break;
                         }
                     case "right":
                         {
-                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(128, 0);
                             break;
                         }
                     case "down":
                         {
-                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(0, 128);
                             break;
                         }
                     case "up":
                         {
-                            soundBoxMove.Play();
                             destinationRectangle.Location += new Point(0, -128);
                             break;
                         }
                 }
+
+                soundBoxMove.Play();
             }
             else if (other is Wall || other is Box2 || (other is Door && other.collisionOn))
             {
