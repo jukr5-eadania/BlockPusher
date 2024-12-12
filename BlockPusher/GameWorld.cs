@@ -102,7 +102,7 @@ namespace BlockPusher
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) && _gameState == GameState.Playing)
             {
-                SetGameState(GameState.MainMenu);
+                SetGameState(GameState.LevelSelect);
                 translation = Matrix.CreateScale(1f);
             }
 
